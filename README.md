@@ -7,3 +7,4 @@ Work Cell Scheduler.  WebIS Spring 2014.
 * J.D. Stumpf
 * Kurt Ehlers
 * Lance Markert
+* Jennifer Bergman
