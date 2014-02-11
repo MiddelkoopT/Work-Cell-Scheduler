@@ -10,3 +10,4 @@ Work Cell Scheduler.  WebIS Spring 2014.
 * Jennifer Bergman
 * Mark Dintelman
 * Joseph Ahlbrandt
+* Tim Merkel
