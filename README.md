@@ -12,3 +12,4 @@ Work Cell Scheduler.  WebIS Spring 2014.
 * Joseph Ahlbrandt
 * Tim Merkel
 * Mike Groene
+* Andrew Lazalier
