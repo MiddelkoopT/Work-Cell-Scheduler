@@ -6,3 +6,4 @@ Work Cell Scheduler.  WebIS Spring 2014.
 * Timothy Middelkoop, Ph.D., C.E.M.
 * J.D. Stumpf
 * Kurt Ehlers
+* Lance Markert
