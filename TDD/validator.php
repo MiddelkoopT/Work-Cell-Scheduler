@@ -24,11 +24,6 @@ abstract class Validator extends \PHPUnit_Framework_TestCase {
 		parent::setUp();
 	}
 
-	function testTidy() {
-		exec(self::$tidy." --version",$output,$return);
-		$this->assertContains("HTML Tidy for HTML5",$output[0]);
-	}
-
 	/**
 	 * PHPUnit test validation of a page, returns rendered page.
 	 * @param string $file to be validated

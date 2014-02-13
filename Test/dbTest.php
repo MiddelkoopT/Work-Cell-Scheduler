@@ -1,6 +1,6 @@
 <?php
 // Database Test Copyright 2014 by WebIS Spring 2014 License Apache 2.0
-require_once 'TDD/validator.php';
+require_once 'Work-Cell-Scheduler/TDD/validator.php';
 
 class MyTestCase extends WebIS\Validator {
 

@@ -1,6 +1,6 @@
 <?php
 // Main Page Test Copyright 2014 by WebIS Spring 2014 License Apache 2.0
-require_once 'TDD/validator.php';
+require_once 'Work-Cell-Scheduler/TDD/validator.php';
 
 class MyTestCase extends WebIS\Validator {
 
@@ -8,6 +8,11 @@ class MyTestCase extends WebIS\Validator {
 	
 	function testValidator() {
 		$this->assertValidHTML("Web/","<h1>Work Cell Scheduler</h1>");
+	}
+	
+	function testApp() {
+		$this->assertValidHTML("Web/ping.php","Ping");
+		$this->assertValidHTML("Web/ping.php","pong:&lt;em&gt;PING&lt;em&gt;",array('ping'=>'<em>PING<em>'));
 	}
 						
 }
