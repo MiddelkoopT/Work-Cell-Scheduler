@@ -5,7 +5,7 @@ require_once 'Work-Cell-Scheduler/WCS/os.php';
 include 'Work-Cell-Scheduler/Config/local.php';
 
 
-class OsTestCase extends WebIS\Validator {
+class OsServiceTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 
@@ -87,7 +87,7 @@ XML;
 }
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-	OsTestCase::main();
+	OsServiceTestCase::main();
 }
 
 ?>
