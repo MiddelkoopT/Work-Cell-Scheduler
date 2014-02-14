@@ -15,7 +15,9 @@ class OsTestCase extends WebIS\Validator {
 		//print_r($output);
 		$this->assertEquals(0,$return);
 		$this->assertContains("OS Version: 2.",$output[5]);
-		
+	}
+
+	function testSolver(){
 		file_put_contents("first.osil",self::$osil);
 		exec(WebIS\OS::$solver." -osil first.osil -osrl first.osrl",$output,$return);
 		$this->assertEquals(0,$return);
@@ -27,7 +29,6 @@ class OsTestCase extends WebIS\Validator {
 		
 		unlink("first.osil");
 		unlink("first.osrl");
-		
 	}
 
 	static $osil =<<<XML
