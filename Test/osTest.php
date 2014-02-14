@@ -2,8 +2,10 @@
 // Optimization Services Test Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 require_once 'Work-Cell-Scheduler/TDD/validator.php';
 require_once 'Work-Cell-Scheduler/WCS/os.php';
+include 'Work-Cell-Scheduler/Config/local.php';
 
-class MyTestCase extends WebIS\Validator {
+
+class OsTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 
@@ -12,7 +14,7 @@ class MyTestCase extends WebIS\Validator {
 		exec(WebIS\OS::$solver." --version",$output,$return);
 		//print_r($output);
 		$this->assertEquals(0,$return);
-		$this->assertContains("OS Version: 2.4",$output[5]);
+		$this->assertContains("OS Version: 2.",$output[5]);
 		
 		file_put_contents("first.osil",self::$osil);
 		exec(WebIS\OS::$solver." -osil first.osil -osrl first.osrl",$output,$return);
@@ -84,7 +86,7 @@ XML;
 }
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-	MyTEstCase::main();
+	OsTestCase::main();
 }
 
 ?>

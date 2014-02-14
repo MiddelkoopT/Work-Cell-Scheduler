@@ -1,8 +1,9 @@
 <?php
 // Main Page Test Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 require_once 'Work-Cell-Scheduler/TDD/validator.php';
+include 'Work-Cell-Scheduler/Config/local.php';
 
-class MyTestCase extends WebIS\Validator {
+class WebTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 	
@@ -18,7 +19,7 @@ class MyTestCase extends WebIS\Validator {
 }
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-	MyTEstCase::main();
+	WebTestCase::main();
 }
 
 ?>

@@ -1,8 +1,10 @@
 <?php
 // Database Test Copyright 2014 by WebIS Spring 2014 License Apache 2.0
+require_once 'Work-Cell-Scheduler/Config/global.php';
 require_once 'Work-Cell-Scheduler/TDD/validator.php';
+include 'Work-Cell-Scheduler/Config/local.php';
 
-class MyTestCase extends WebIS\Validator {
+class DbTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 	
@@ -19,14 +21,14 @@ class MyTestCase extends WebIS\Validator {
 		$this->assertTrue(function_exists('mysqli_init'),"mysqli module not loaded, make sure php.ini is loaded");
 		
 		// Test connection and create test database
-		$db=new mysqli('127.0.0.1','root','webis','');
+		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'');
 		$this->assertNotNull($db,"Unable to create database handle");
 		$this->execute($db,'DROP DATABASE IF EXISTS WCSTDD;');
 		$this->execute($db,'CREATE DATABASE WCSTDD;');
 		$db->close();
 
 		// Connect to database and create test table with data
-		$db=new mysqli('127.0.0.1','root','webis','WCSTDD');
+		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'WCSTDD');
 		$this->assertNotNull($db,"Unable to create database handle");
 		$this->execute($db,'CREATE TABLE Map (k integer, v varchar(30));');
 		$this->execute($db,"INSERT INTO Map (k,v) VALUES (2,'世界')");
@@ -48,7 +50,7 @@ class MyTestCase extends WebIS\Validator {
 }
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-	MyTEstCase::main();
+	DbTestCase::main();
 }
 
 ?>

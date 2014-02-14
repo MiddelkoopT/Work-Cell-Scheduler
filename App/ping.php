@@ -10,7 +10,7 @@ class Ping{
 	 * @return bool
 	 */
 	function config(){
-		return CONFIG;
+		return Config::$config;
 	}
 	
 	/**
