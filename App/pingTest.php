@@ -19,3 +19,4 @@ class MyTestCase extends WebIS\Validator {
 if (!defined('PHPUnit_MAIN_METHOD')) {
 	MyTestCase::main();
 }
+?>
