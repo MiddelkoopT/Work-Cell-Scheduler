@@ -9,7 +9,24 @@ class TrainingMatrix{
 	private $line = array(1010,1020,1030,1040); 
 
 	public function getPeople() {
-		return $this->people;
+		// $people=array('Dr.Middelkoop','JD');
+		$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'database');
+		if($db===NULL){
+			echo "Error unable to connect to database";
+			exit();
+		}
+		$stmt=$db->prepare("SELECT person FROM TrainingMatrix");
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		$stmt->execute();
+		$stmt->bind_result($person);
+		$people=array();
+		while($stmt->fetch()){
+			$people[]=$person;
+		}
+		return $people;
 	}
 	
 	public function getWorkstations() {
