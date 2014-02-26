@@ -21,7 +21,15 @@ class TrainingMatrix{
 			exit();
 		}
 		$stmt->execute();
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
 		$stmt->bind_result($person);
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
 		$people=array();
 		while($stmt->fetch()){
 			$people[]=$person;
