@@ -15,11 +15,16 @@ class DbTestCase extends WebIS\Validator {
 		$stmt->close();
 	}
 	
-	function testDatabase() {
+	function testMysqli() {
 		// mysqli module
 		$this->assertTrue(extension_loaded('mysqli'),"mysqli module not loaded, make sure php.ini is loaded");
 		$this->assertTrue(function_exists('mysqli_init'),"mysqli module not loaded, make sure php.ini is loaded");
-		
+	}
+
+	/**
+	 * @depends testMysqli
+	 */
+	function testConnection() {
 		// Test connection and create test database
 		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'');
 		$this->assertNotNull($db,"Unable to create database handle");
@@ -44,6 +49,33 @@ class DbTestCase extends WebIS\Validator {
 		$this->assertEquals('世界',$value,"SELECT value does not match INSERT");
 		$this->assertEquals(FALSE,$stmt->fetch(),"Unexpected results");
 		$stmt->close();
+		$db->close();
+	}
+	
+	/**
+	 * @depends testMysqli
+	 */
+	function testDatabase() {
+		// Test proper database configuration, CREATE WCS if it does not exist
+		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'');
+		$this->assertNotNull($db,"Unable to create database handle");
+		$stmt=$db->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'WCS'");
+		$this->assertNotEquals(FALSE,$stmt,$db->error);
+		$this->assertTrue($stmt->execute(),$db->error);
+		$this->assertTrue($stmt->bind_result($name));
+		$result=$stmt->fetch();
+		if($result==TRUE){
+			$this->assertEquals("wcs",$name,"Database name does not match query");
+		}else{
+			$this->execute($db,'CREATE DATABASE WCS;');
+		}
+		$stmt->close();
+		$db->close();
+
+		// Reconnect with WCS
+		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'WCS');
+		$this->assertNotNull($db,"Unable to create database handle to connect to WCS database");
+		
 		$db->close();
 	}
 						
