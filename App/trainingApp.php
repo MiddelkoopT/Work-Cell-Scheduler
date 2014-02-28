@@ -5,30 +5,42 @@ require_once 'Work-Cell-Scheduler/Config/global.php';
 
 class TrainingMatrix{
 
-	private $people = array('Ann','Bob','Clide');
-	private $line = array(1010,1020,1030,1040); 
+	/**
+	 * Database handle
+	 * @var \mysqli
+	 */
+	private $db=NULL;
+	/**
+	 * Training statement
+	 * @var \mysqli_stmt
+	 */
+	private $training_stmt=NULL;
+	/**
+	 * Training CRW that the staement binds to.
+	 * @var unknown
+	 */
+	private $training_person;
+	private $training_workstation;
+	private $training_wsp;
+
+	function __construct(){
+		//print "TrainingMatrix>";
+		$this->db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'WCS');
+		if($this->db===NULL){
+			die("Error unable to connect to database");
+		}
+	}
 
 	public function getPeople() {
-		// $people=array('Dr.Middelkoop','JD');
-		$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'WCS');
-		if($db===NULL){
-			echo "Error unable to connect to database";
-			exit();
-		}
-		$stmt=$db->prepare("SELECT person FROM TrainingMatrix");
+		$stmt=$this->db->prepare("SELECT DISTINCT person FROM TrainingMatrix ORDER BY person");
 		if($stmt===FALSE){
-			echo "prepare error ",$db->error;
-			exit();
+			die("prepare error ".$this->db->error);
 		}
-		$stmt->execute();
-		if($stmt===FALSE){
-			echo "prepare error ",$db->error;
-			exit();
+		if($stmt->bind_result($person)===FALSE){
+			die("bind error ".$this->db->error);
 		}
-		$stmt->bind_result($person);
-		if($stmt===FALSE){
-			echo "prepare error ",$db->error;
-			exit();
+		if($stmt->execute()===FALSE){
+			die("execute error ".$this->db->error);
 		}
 		$people=array();
 		while($stmt->fetch()){
@@ -38,11 +50,58 @@ class TrainingMatrix{
 	}
 	
 	public function getWorkstations() {
-		return $this->line;
+		$stmt=$this->db->prepare("SELECT DISTINCT workstation FROM TrainingMatrix ORDER BY workstation");
+		if($stmt===FALSE){
+			die("prepare error ".$this->db->error);
+		}
+		if($stmt->bind_result($workstation)===FALSE){
+			die("bind error ".$this->db->error);
+		}
+		if($stmt->execute()===FALSE){
+			die("execute error ".$this->db->error);
+		}
+		$workstations=array();
+		while($stmt->fetch()){
+			$workstations[]=$workstation;
+		}
+		return $workstations;
+	}
+	
+	function training(){
+		if($this->training_stmt!=NULL){
+			return $this->training_stmt;
+		}
+		$stmt=$this->db->prepare("SELECT wsp FROM TrainingMatrix WHERE person=? AND workstation=?");
+		if($stmt===FALSE){
+			die("prepare error ".$this->db->error);
+		}
+		if($stmt->bind_param('ss',$this->training_person,$this->training_workstation)===FALSE){
+			die("bind error ".$this->db->error);
+		}
+		if($stmt->bind_result($this->training_wsp)===FALSE){
+			die("bind error ".$this->db->error);
+		}
+		$this->training_stmt=$stmt;
+		return $stmt;
 	}
 	
 	public function getTraining($person,$workstation){
-		return 0.10;
+		$this->training_person=$person;
+		$this->training_workstation=$workstation;
+		$stmt=$this->training();
+		if($stmt->execute()===FALSE){
+			die("getTraining: ".$this->db->error);
+		}
+		if($stmt->fetch()){
+			return $this->training_wsp;
+		}
+		return 0;
+	}
+	
+	function __destruct() {
+		if($this->db!=NULL){
+			$this->db->close();
+		}
 	}
 	
 }

@@ -21,9 +21,9 @@ foreach($t->getWorkstations() as $w){
 </tr>
 <?php 
 foreach($t->getPeople() as $p){
-	echo "<tr><td>$p</td>";
+	echo "<tr><th>$p</th>";
 	foreach($t->getWorkstations() as $w) {
-		echo "<td> $p:$w ". $t->getTraining($p,$w);
+		echo "<td>".$t->getTraining($p,$w)."</td>";
 	}		
 	echo "\n";
 }

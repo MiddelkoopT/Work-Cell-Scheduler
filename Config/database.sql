@@ -10,7 +10,9 @@ CREATE TABLE TrainingMatrix (
 
 INSERT INTO TrainingMatrix (person,cell,workstation,wcp,wsp) VALUES 
 	('Dr.Middelkoop',1000,1010,0.19,0.19),
-	('JD',1000,1010,0.99,0.99);
+	('Dr.Middelkoop',1000,1020,0.55,0.32),
+	('JD',1000,1010,0.99,0.99),
+	('JD',1000,1030,0.90,0.10);
 
 -- SELECT * FROM TrainingMatrix;
 -- SELECT person,cell,w

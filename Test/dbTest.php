@@ -43,8 +43,8 @@ class DbTestCase extends WebIS\Validator {
 		$stmt=$db->prepare("SELECT v FROM Map WHERE k=?");
 		$this->assertNotEquals(FALSE,$stmt,$db->error);
 		$this->assertTrue($stmt->bind_param("d",$id),$db->error);
-		$this->assertTrue($stmt->execute(),$db->error);
 		$this->assertTrue($stmt->bind_result($value));
+		$this->assertTrue($stmt->execute(),$db->error);
 		$this->assertTrue($stmt->fetch());
 		$this->assertEquals('世界',$value,"SELECT value does not match INSERT");
 		$this->assertEquals(FALSE,$stmt->fetch(),"Unexpected results");
@@ -62,8 +62,8 @@ class DbTestCase extends WebIS\Validator {
 		//$this->execute($db,'DROP DATABASE IF EXISTS WCS;'); // Force reload
 		$stmt=$db->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'WCS'");
 		$this->assertNotEquals(FALSE,$stmt,$db->error);
-		$this->assertTrue($stmt->execute(),$db->error);
 		$this->assertTrue($stmt->bind_result($name));
+		$this->assertTrue($stmt->execute(),$db->error);
 		$result=$stmt->fetch();
 		$stmt->close();
 		if($result==TRUE){
