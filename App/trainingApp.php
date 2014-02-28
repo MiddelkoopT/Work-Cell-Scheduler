@@ -10,7 +10,7 @@ class TrainingMatrix{
 
 	public function getPeople() {
 		// $people=array('Dr.Middelkoop','JD');
-		$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'database');
+		$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'WCS');
 		if($db===NULL){
 			echo "Error unable to connect to database";
 			exit();

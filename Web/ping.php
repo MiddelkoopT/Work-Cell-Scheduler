@@ -9,7 +9,7 @@
 <h1>Ping</h1>
 <p>App:
 <?php 
-require_once 'Work-Cell-Scheduler/App/ping.php';
+require_once 'Work-Cell-Scheduler/App/pingApp.php';
 if(isset($_REQUEST['ping'])){
 	$p=new WCS\Ping();
 	echo htmlspecialchars($p->ping($_REQUEST['ping']));

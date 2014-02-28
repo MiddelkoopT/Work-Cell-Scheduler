@@ -12,7 +12,7 @@
 
 <tr><th></th>
 <?php 
-require_once 'Work-Cell-Scheduler/App/training.php';
+require_once 'Work-Cell-Scheduler/App/trainingApp.php';
 $t=new WCS\TrainingMatrix();
 foreach($t->getWorkstations() as $w){
 	echo "<th>$w\n";
