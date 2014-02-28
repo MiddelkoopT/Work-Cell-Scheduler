@@ -5,9 +5,6 @@ require_once 'Work-Cell-Scheduler/Config/global.php';
 
 class TrainingMatrix{
 
-	private $people = array('Ann','Bob','Clide');
-	private $line = array(1010,1020,1030,1040); 
-
 	public function getPeople() {
 		// $people=array('Dr.Middelkoop','JD');
 		$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'database');
@@ -38,13 +35,63 @@ class TrainingMatrix{
 	}
 	
 	public function getWorkstations() {
-		return $this->line;
-	}
+			$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'database');
+		if($db===NULL){
+			echo "Error unable to connect to database";
+			exit();
+		}
+		$stmt=$db->prepare("SELECT workstation FROM TrainingMatrix");
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		$stmt->execute();
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		$stmt->bind_result($workstation);
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		for ($id = 0; $id <= sizeof($workstation)-1; $i++){
+		$workstation[$id]=array();
+		while($stmt->fetch()){
+			$workstation[$id]=$workstation;
+				}
+		return $workstation;
+		
+			}
+		}
 	
 	public function getTraining($person,$workstation){
-		return 0.10;
+	$db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'database');
+		if($db===NULL){
+			echo "Error unable to connect to database";
+			exit();
+		}
+		$stmt=$db->prepare("SELECT wsp FROM TrainingMatrix");
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		$stmt->execute();
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		$stmt->bind_result($workstation);
+		if($stmt===FALSE){
+			echo "prepare error ",$db->error;
+			exit();
+		}
+		$workstation=array();
+		while($stmt->fetch()){
+			$wsp[]=$wsp;
+		}
+		return $wsp;
 	}
 	
 }
-
 ?>

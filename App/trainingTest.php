@@ -12,7 +12,7 @@ class TrainingTestCase extends WebIS\Validator {
 		$t=new \WCS\TrainingMatrix();
 		$this->assertEquals(array('Dr.Middelkoop','JD'),$t->getPeople());
 		$this->assertEquals(array(1010,1020,1030,1040),$t->getWorkstations());
-		$this->assertEquals(0.10,$t->getTraining('JD',1010));
+		$this->assertEquals(0.99,$t->getTraining('JD',1020));
 	}
 	
 	function testTrainingPage(){
