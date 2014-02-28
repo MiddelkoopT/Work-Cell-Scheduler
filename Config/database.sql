@@ -1,5 +1,5 @@
 --  Database Copyright 2014 by WebIS Spring 2014 License Apache 2.0
-DROP TABLE TrainingMatrix;
+DROP TABLE IF EXISTS TrainingMatrix;
 CREATE TABLE TrainingMatrix (
   person VARCHAR(30),
   cell integer,
