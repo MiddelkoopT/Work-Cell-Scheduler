@@ -59,7 +59,7 @@ class DbTestCase extends WebIS\Validator {
 		// Test proper database configuration, CREATE WCS if it does not exist
 		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'');
 		$this->assertNotNull($db,"Unable to create database handle");
-		//$this->execute($db,'DROP DATABASE IF EXISTS WCS;'); // Force reload
+		$this->execute($db,'DROP DATABASE IF EXISTS WCS;'); // Force reload
 		$stmt=$db->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'WCS'");
 		$this->assertNotEquals(FALSE,$stmt,$db->error);
 		$this->assertTrue($stmt->bind_result($name));
@@ -67,7 +67,7 @@ class DbTestCase extends WebIS\Validator {
 		$result=$stmt->fetch();
 		$stmt->close();
 		if($result==TRUE){
-			$this->assertEquals("wcs",$name,"Database name does not match query");
+			$this->assertEquals("WCS",$name,"Database name does not match query");
 			$db->close();
 			return;
 		}
@@ -80,7 +80,7 @@ class DbTestCase extends WebIS\Validator {
 		$this->assertNotNull($db,"Unable to create database handle to connect to WCS database");
 
 		// Load schema 
-		$schema=file_get_contents('../Config/database.sql');
+		$schema=file_get_contents('Work-Cell-Scheduler/Config/database.sql',TRUE);
 		$this->assertContains("TrainingMatrix",$schema);
 		$this->assertNotEquals(FALSE,$schema);
 		$this->assertTrue($db->multi_query($schema),"schmea did not execute:".$db->error);

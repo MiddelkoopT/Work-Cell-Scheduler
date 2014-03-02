@@ -8,7 +8,7 @@ class WebTestCase extends WebIS\Validator {
 	protected static $__CLASS__=__CLASS__;
 	
 	function testValidator() {
-		$this->assertValidHTML("Web/","<h1>Work Cell Scheduler</h1>");
+		$this->assertValidHTML("Web/static.php","<h1>Work Cell Scheduler</h1>");
 	}
 	
 	function testApp() {
