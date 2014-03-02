@@ -6,4 +6,7 @@ if(class_exists('WebIS\Validator')){
 }
 if(class_exists('WebIS\OS')){
 	WebIS\OS::$solver="/var/www/Work-Cell-Scheduler/bin/OSSolverService";
+	// OS temporary directory. Should have 775 permissions and owned by the webserver group (www-data)
+	WebIS\OS::$tmp="/var/www/Work-Cell-Scheduler/tmp/"; // trailing slash required
+	
 }

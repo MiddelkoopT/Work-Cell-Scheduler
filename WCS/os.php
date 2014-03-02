@@ -4,6 +4,7 @@ namespace WebIS;
 
 class OS {
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
+	static $tmp="\\WebIS\\tmp\\"; // trailing slash required.
 	public $osil=NULL;
 	public $osrl=NULL;
 	

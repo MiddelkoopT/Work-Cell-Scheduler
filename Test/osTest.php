@@ -18,17 +18,23 @@ class OsServiceTestCase extends WebIS\Validator {
 	}
 
 	function testSolver(){
-		file_put_contents("first.osil",self::$osil);
-		exec(WebIS\OS::$solver." -osil first.osil -osrl first.osrl",$output,$return);
+		// check and create tmp directory, on for production should be 0775 and group www-data.
+		if(!is_dir(WebIS\OS::$tmp)){
+			echo "[creating tmp dir]";
+			$this->assertTrue(mkdir(WebIS\OS::$tmp,0755),"Unable to create OS tmp directory");
+		}
+		$this->assertTrue(is_dir(WebIS\OS::$tmp),"no temporary directory for OS");
+		file_put_contents(WebIS\OS::$tmp."first.osil",self::$osil);
+		exec(WebIS\OS::$solver." -osil ".WebIS\OS::$tmp."first.osil -osrl ".WebIS\OS::$tmp."first.osrl",$output,$return);
 		$this->assertEquals(0,$return);
-		$result=file_get_contents('first.osrl');
+		$result=file_get_contents(WebIS\OS::$tmp.'first.osrl');
 		$this->assertNotEquals(FALSE,$result);
 		$this->assertContains('<var idx="0">0</var>',$result);
 		$this->assertContains('<var idx="1">40</var>',$result);
 		$this->assertContains('<obj idx="-1">-80</obj>',$result);
 		
-		unlink("first.osil");
-		unlink("first.osrl");
+		unlink(WebIS\OS::$tmp."first.osil");
+		unlink(WebIS\OS::$tmp."first.osrl");
 	}
 
 	static $osil =<<<XML
