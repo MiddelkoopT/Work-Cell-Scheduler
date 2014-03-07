@@ -35,6 +35,7 @@ class Person {
 	 * @return bool person set.
 	 */
 	public function setPerson($person){
+		print "Person.setPerson:".$person;
 		if(preg_match('/^[a-zA-Z0-9]+$/',$person)){
 			$this->person=$person;
 			return TRUE;
