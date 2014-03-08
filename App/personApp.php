@@ -16,12 +16,11 @@ class Person {
 	public $rate=NULL;
 
 	function __construct(){
-		//print "WCS/PersonApp>";
-		$this->db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,\WCS\Config::$dbdatabase);
-		if($this->db===NULL){
-			die("Error unable to connect to database");
+		$this->db = @new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,\WCS\Config::$dbdatabase);
+		if($this->db->connect_error){
+			throw new \Exception("Error unable to connect to database: ".$this->db->connect_error);
 		}
-	}
+			}
 	
 	function __destruct() {
 		if($this->db!=NULL){
@@ -67,18 +66,18 @@ class Person {
 	public function insert() {
 		$stmt=$this->db->prepare("INSERT INTO Person (person,name,rate) VALUES (?,?,?)");
 		if($stmt===FALSE){
-			error_log("WCS/Person.insert> stmt:".$this->db->error);
+			die("WCS/Person.insert> stmt:".$this->db->error);
 			return FALSE;
 		}
 		if($stmt->bind_param('ssd',$this->person,$this->name,$this->rate)===FALSE){
-			error_log("WCS/Person.insert> bind_param:".$this->db->error);
+			die("WCS/Person.insert> bind_param:".$this->db->error);
 			return FALSE;
 		}
 		if($stmt->execute()===FALSE){
 			if($this->db->errno==1062){ // Duplicate.
 				return FALSE;
 			}
-			error_log("WCS/Person.insert> execute:".$this->db->errno." ".$this->db->error);
+			die("WCS/Person.insert> execute:".$this->db->errno." ".$this->db->error);
 			return FALSE;
 		}
 		return TRUE;
@@ -91,15 +90,15 @@ class Person {
 	public function delete() {
 		$stmt=$this->db->prepare("DELETE FROM Person WHERE person=?");
 		if($stmt===FALSE){
-			error_log("WCS/Person.delete> stmt:".$this->db->error);
+			die("WCS/Person.delete> stmt:".$this->db->error);
 			return FALSE;
 		}
 		if($stmt->bind_param('s',$this->person)===FALSE){
-			error_log("WCS/Person.delete> bind_param:".$this->db->error);
+			die("WCS/Person.delete> bind_param:".$this->db->error);
 			return FALSE;
 		}
 		if($stmt->execute()===FALSE){
-			error_log("WCS/Person.delete> execute:".$this->db->errno." ".$this->db->error);
+			die("WCS/Person.delete> execute:".$this->db->errno." ".$this->db->error);
 			return FALSE;
 		}
 		return TRUE;
@@ -108,20 +107,20 @@ class Person {
 	public function get() {
 		$stmt=$this->db->prepare("SELECT name,rate FROM Person WHERE person=?");
 		if($stmt===FALSE){
-			error_log("WCS/Person.get> stmt:".$this->db->error);
+			die("WCS/Person.get> stmt:".$this->db->error);
 			return FALSE;
 		}
 		
 		if($stmt->bind_param('s',$this->person)===FALSE){
-			error_log("WCS/Person.get> bind_param:".$this->db->error);
+			die("WCS/Person.get> bind_param:".$this->db->error);
 			return FALSE;
 		}
 		if($stmt->bind_result($this->name,$this->rate)===FALSE){
-			error_log("WCS/Person.get> bind_result:".$this->db->error);
+			die("WCS/Person.get> bind_result:".$this->db->error);
 			return FALSE;
 		}
 		if($stmt->execute()===FALSE){
-			error_log("WCS/Person.get> bind_result:".$this->db->error);
+			die("WCS/Person.get> bind_result:".$this->db->error);
 			return FALSE;
 		}
 		return $stmt->fetch();
