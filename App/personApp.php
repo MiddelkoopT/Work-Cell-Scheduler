@@ -7,6 +7,26 @@ class Person {
 	private $person=NULL;
 	private $name=NULL;
 	
+	/**
+	 * Database Handle
+	 * @var \mysqli
+	 */
+	private $db=NULL;
+	
+	function __construct(){
+		$db=@new \mysqli('127.0.0.1','root','webis','WCS');
+		if($db->connect_error){
+			die("Person.construct: cannot connect to database ".$db->connect_error);
+		}
+		$this->db=$db;
+	}
+	
+	function __destruct(){
+		if($this->db!=NULL){
+			$this->db->close();
+		}
+	}
+	
 	function display(){
 		$str="{person: $this->person";
 		if(!is_null($this->name)){
@@ -36,52 +56,42 @@ class Person {
 	}
 	
 	function write(){
-		$db=@new \mysqli('127.0.0.1','root','webis','WCS');
-		if($db->connect_error){
-			die("Person.write: cannot connect to database ".$db->connect_error);
-		}
-		$stmt=$db->prepare("INSERT INTO Person (person,name) VALUES (?,?)");
+		$stmt=$this->db->prepare("INSERT INTO Person (person,name) VALUES (?,?)");
 		if($stmt===FALSE){
-			die("Person.write: unable to create statement " . $db->error);
+			die("Person.write: unable to create statement " . $this->db->error);
 		}
 		if($stmt->bind_param("ss",$this->person,$this->name)===FALSE){
-			die("Person.write: unable to bind " . $db->error);
+			die("Person.write: unable to bind " . $this->db->error);
 		}
 		if($stmt->execute()===FALSE){
 			if($stmt->errno==1062){ // Duplicate Entry
 				$stmt->close();
-				$db->close();
+				$this->db->close();
 				return FALSE;
 			}
-			die("Person.write: unable to execute $db->errno $db->error");
+			die("Person.write: unable to execute $this->db->errno $this->db->error");
 		}
 		$stmt->close();
-		$db->close();
 		return TRUE;
 	}
 	
 	function delete(){
-		$db=@new \mysqli('127.0.0.1','root','webis','WCS');
-		if($db->connect_error){
-			die("Person.write: cannot connect to database ".$db->connect_error);
-		}
-		$stmt=$db->prepare("DELETE FROM Person WHERE person=?");
+		$stmt=$this->db->prepare("DELETE FROM Person WHERE person=?");
 		if($stmt===FALSE){
-			die("Person.write: unable to create statement " . $db->error);
+			die("Person.write: unable to create statement " . $this->db->error);
 		}
 		if($stmt->bind_param("s",$this->person)===FALSE){
-			die("Person.write: unable to bind " . $db->error);
+			die("Person.write: unable to bind " . $this->db->error);
 		}
 		if($stmt->execute()===FALSE){
 			if($stmt->errno==1062){ // Duplicate Entry
 				$stmt->close();
-				$db->close();
+				$this->db->close();
 				return FALSE;
 			}
-			die("Person.write: unable to execute $db->errno $db->error");
+			die("Person.write: unable to execute $this->db->errno $this->db->error");
 		}
 		$stmt->close();
-		$db->close();
 		return TRUE;
 	}
 	

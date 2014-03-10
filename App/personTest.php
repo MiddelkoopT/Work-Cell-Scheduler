@@ -21,9 +21,6 @@ class PersonTestCase extends WebIS\Validator {
 		// echo $p->display();
 		$this->assertTrue($p->delete());
 		$this->assertTrue($p->write());
-		
-		
-		
 	}
 	
 }
