@@ -36,14 +36,55 @@ class Person {
 	}
 	
 	function write(){
-		$db=new \mysqli('127.0.0.1','root','webis','WCS');
-		if($db===NULL){
-			echo "Person.write:","cannot connect to database";
+		$db=@new \mysqli('127.0.0.1','root','webis','WCS');
+		if($db->connect_error){
+			die("Person.write: cannot connect to database ".$db->connect_error);
 		}
-		
+		$stmt=$db->prepare("INSERT INTO Person (person,name) VALUES (?,?)");
+		if($stmt===FALSE){
+			die("Person.write: unable to create statement " . $db->error);
+		}
+		if($stmt->bind_param("ss",$this->person,$this->name)===FALSE){
+			die("Person.write: unable to bind " . $db->error);
+		}
+		if($stmt->execute()===FALSE){
+			if($stmt->errno==1062){ // Duplicate Entry
+				$stmt->close();
+				$db->close();
+				return FALSE;
+			}
+			die("Person.write: unable to execute $db->errno $db->error");
+		}
+		$stmt->close();
+		$db->close();
 		return TRUE;
 	}
-		
+	
+	function delete(){
+		$db=@new \mysqli('127.0.0.1','root','webis','WCS');
+		if($db->connect_error){
+			die("Person.write: cannot connect to database ".$db->connect_error);
+		}
+		$stmt=$db->prepare("DELETE FROM Person WHERE person=?");
+		if($stmt===FALSE){
+			die("Person.write: unable to create statement " . $db->error);
+		}
+		if($stmt->bind_param("s",$this->person)===FALSE){
+			die("Person.write: unable to bind " . $db->error);
+		}
+		if($stmt->execute()===FALSE){
+			if($stmt->errno==1062){ // Duplicate Entry
+				$stmt->close();
+				$db->close();
+				return FALSE;
+			}
+			die("Person.write: unable to execute $db->errno $db->error");
+		}
+		$stmt->close();
+		$db->close();
+		return TRUE;
+	}
+	
 }
 
 ?>

@@ -19,6 +19,7 @@ class PersonTestCase extends WebIS\Validator {
 		$this->assertEquals("Dr. Middelkoop",$p->getName());
 		$this->assertEquals("{person: DrMiddelkoop name: Dr. Middelkoop}",$p->display(),"adding name to object");
 		// echo $p->display();
+		$this->assertTrue($p->delete());
 		$this->assertTrue($p->write());
 		
 		
