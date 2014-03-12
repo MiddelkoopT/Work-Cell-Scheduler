@@ -11,8 +11,8 @@ CREATE TABLE Person (
 
 -- Training Matrix
 DROP TABLE IF EXISTS TrainingMatrix;
-CREATE TABLE TrainingMatrix (
-  person VARCHAR(30),
+CREATE TABLE TrainingMatrix2 (
+  person VARCHAR(30) PRIMARY KEY,
   cell integer,
   workstation integer,
   wcp double,
