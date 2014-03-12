@@ -21,6 +21,15 @@ class PersonTestCase extends WebIS\Validator {
 		// echo $p->display();
 		$this->assertTrue($p->delete());
 		$this->assertTrue($p->write());
+		
+		$a=new \WCS\PersonApp();
+		$this->assertTrue($a->add($p));
+		$this->assertContains("Dr. Middelkoop",$a->edit("person.php"));
+		$this->assertFalse($a->load());
+		$_REQUEST['action']='Load';
+		$_REQUEST['person']='DrMiddelkoop';
+		$this->assertTrue($a->load());
+		
 	}
 	
 }
