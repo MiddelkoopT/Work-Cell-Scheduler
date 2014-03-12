@@ -60,7 +60,13 @@ class a2person {
 			$a2person_name=" name: $this->a2person_name";
 		}
 		return "{person: $this->a2person_whitelist".$a2person_name."}";
-		
+	}
+	
+	public function delete(){
+		$stmt=$this->db->prepare("DELETE FROM a2person WHERE a2person_whitelist=?");
+		if($stmt===FALSE){
+			error_log("WCS")
+		}
 	}
 	
 }
