@@ -16,9 +16,11 @@ class a2personTestCase extends WebIS\Validator {
 		$this->AssertEquals("{person: MikeGroene}", $n->display());
 		$this->AssertTrue($n->seta2person_name("Mike Groene"));
 		$this->AssertEquals("{person: MikeGroene name: Mike Groene}",$n->display());
-		
+		$this->AssertTrue($n->delete(),"first delete test");
+		$this->AssertTrue($n->delete(), "second delete test");
+		$this->AsserTrue($n->insert());
+		$this->AssertFALSE($n->insert());
 	}
-	
 }
 
 if (!defined('PHPUnit_MAIN_METHOD')) {

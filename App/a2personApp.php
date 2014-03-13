@@ -36,7 +36,7 @@ class a2person {
 	 */
 		
 	public function seta2person_whitelist($a2person_whitelist){
-		//print "this is visible";
+		print "seta2person_whitelist: ".$a2person_whitelist;
 		if (preg_match('/^[a-zA-Z]+$/',$a2person_whitelist)){
 			$this->a2person_whitelist=$a2person_whitelist;
 			Return TRUE;
@@ -54,6 +54,10 @@ class a2person {
 		return TRUE;	
 	}
 	
+	/**
+	 * Display a2person
+	 * @return string human readable display.
+	 */
 	public function display(){
 		$a2person_name='' ;
 		if(!\is_null($this->a2person_name)){
@@ -62,12 +66,56 @@ class a2person {
 		return "{person: $this->a2person_whitelist".$a2person_name."}";
 	}
 	
+	/**
+	 * Insert into database
+	 * @return boolean info in database.
+	 */
+	public function insert() {
+		$query = "INSERT INTO a2person (a2person_whitelist,a2person_name,a2person_email) VALUES (?,?,?)";
+		$stmt = $this->db->prepare($query);
+		if($stmt===FALSE){
+			
+			return FALSE;
+		}
+		if($stmt->bind_param("sss",$this->a2person_whitelist,$this->a2person_name,$this->a2person_email)===FALSE){
+			
+			return FALSE;
+		}
+		if($stmt-> execute()===FALSE){
+			
+			return FALSE;
+		}
+		
+	return TRUE;
+	}
+	
+	/**
+	 * Remove Person
+	 * @return boolean TRUE
+	 */
 	public function delete(){
 		$stmt=$this->db->prepare("DELETE FROM a2person WHERE a2person_whitelist=?");
-		if($stmt===FALSE){
-			error_log("WCS")
+		
+		if ($stmt===FALSE){
+			
+			return FALSE;
 		}
+		if ($stmt->bind_param('s',$this->a2person_whitelist)===FALSE){
+			
+			return FALSE;
+		}
+		if ($stmt->execute()===FALSE){
+			
+			return FALSE;
+		}
+	return TRUE;
 	}
+	
+	public function a2get();
+	
+	
+	
+	
 	
 }
 
