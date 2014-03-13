@@ -60,7 +60,8 @@ class Person {
 	public function display(){
 		$name='';
 		if(!\is_null($this->name)){
-			$name=" name: $this->name";
+			$name=" name: $this->n
+			ame";
 		}
 		return "{person: $this->person".$name."}";
 	}

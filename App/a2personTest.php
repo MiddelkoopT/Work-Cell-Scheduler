@@ -16,10 +16,14 @@ class a2personTestCase extends WebIS\Validator {
 		$this->AssertEquals("{person: MikeGroene}", $n->display());
 		$this->AssertTrue($n->seta2person_name("Mike Groene"));
 		$this->AssertEquals("{person: MikeGroene name: Mike Groene}",$n->display());
-		$this->AssertTrue($n->delete(),"first delete test");
-		$this->AssertTrue($n->delete(), "second delete test");
-		$this->AsserTrue($n->insert());
-		$this->AssertFALSE($n->insert());
+		$this->AssertTrue($n->a2delete(),"first delete test");
+		$this->AssertTrue($n->a2delete(), "second delete test");
+		$this->AssertTrue($n->a2insert(),"first insert test");
+		$this->AssertFalse($n->a2insert(),"second insert test");
+		$n=new \WCS\a2person();
+		$this->AssertTrue($n->seta2person_whitelist("MikeGroene"));
+		$this->AssertTrue($n->seta2person_name("Mike Groene"));
+		$this->AssertEquals("{person: MikeGroene name: Mike Groene}",$n->display());
 	}
 }
 
