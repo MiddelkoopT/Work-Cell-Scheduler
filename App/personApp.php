@@ -1,22 +1,21 @@
 <?php
-// Person App Copyright 2014 by WebIS Spring 2014 License Apache 2.0
+
 namespace WCS;
 require_once 'Work-Cell-Scheduler/Config/global.php';
 
 class Person {
-
+	
 	/**
 	 * Database handle
 	 * @var \mysqli
 	 */
-	private $db=NULL;
+	public $db = NULL;
 	
-	public $person=NULL;
-	public $name=NULL;
-	public $rate=NULL;
-
+	public $person = NULL;
+	public $name = NULL;
+	//private $email = NULL;
+	
 	function __construct(){
-		//print "WCS/PersonApp>";
 		$this->db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,\WCS\Config::$dbdatabase);
 		if($this->db===NULL){
 			die("Error unable to connect to database");
@@ -34,9 +33,11 @@ class Person {
 	 * @param string $person Alphanumeric username [a-zA-Z0-9]
 	 * @return bool person set.
 	 */
-	public function setPerson($person){
+	
+	
+	public function setPerson($person) {
 		if(preg_match('/^[a-zA-Z0-9]+$/',$person)){
-			$this->person=$person;
+			$this->person = $person;
 			return TRUE;
 		}
 		return FALSE;
@@ -44,7 +45,7 @@ class Person {
 	
 	/**
 	 * Set name
-	 * @param string $name Persons name
+	 * @param string $name Person's name
 	 * @return bool name set.
 	 */
 	public function setName($name){
@@ -56,6 +57,7 @@ class Person {
 	 * Display Person
 	 * @return string human readable display.
 	 */
+	
 	public function display(){
 		$name='';
 		if(!\is_null($this->name)){
@@ -63,8 +65,8 @@ class Person {
 		}
 		return "{person: $this->person".$name."}";
 	}
-
-	public function insert() {
+	
+public function insert() {
 		$stmt=$this->db->prepare("INSERT INTO Person (person,name,rate) VALUES (?,?,?)");
 		if($stmt===FALSE){
 			error_log("WCS/Person.insert> stmt:".$this->db->error);
@@ -130,3 +132,4 @@ class Person {
 }
 
 ?>
+	
