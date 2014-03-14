@@ -2,6 +2,7 @@
 
 -- Person
 DROP TABLE IF EXISTS Person;
+DROP TABLE IF EXISTS a2person;
 CREATE TABLE Person (
   person VARCHAR(30),
   name VARCHAR(128),

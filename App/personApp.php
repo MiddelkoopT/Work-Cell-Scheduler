@@ -34,6 +34,7 @@ class Person {
 	 * @return bool person set.
 	 */
 	public function setPerson($person){
+		print "Person.setPerson:".$person;
 		if(preg_match('/^[a-zA-Z0-9]+$/',$person)){
 			$this->person=$person;
 			return TRUE;
@@ -58,7 +59,8 @@ class Person {
 	public function display(){
 		$name='';
 		if(!\is_null($this->name)){
-			$name=" name: $this->name";
+			$name=" name: $this->n
+			ame";
 		}
 		return "{person: $this->person".$name."}";
 	}
