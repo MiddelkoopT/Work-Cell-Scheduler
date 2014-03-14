@@ -1,18 +1,20 @@
 <?php
 // Person Test Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 require_once 'Work-Cell-Scheduler/TDD/validator.php';
-include 'Work-Cell-Scheduler/Config/local.php';
-require_once 'personApp.php';
+include 'Work-Cell-Scheduler/Config/global.php';
+require_once 'personApp2.php';
 
 class PersonTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 
-	function testTrainingApp() {
+	/**
+	 * 
+	 */
+	function testTrainingApp2() {
 		$p=new \WCS\Person();
 		$this->assertTrue($p->setPerson("DrMiddelkoop"));
 		$this->assertFalse($p->setPerson("Dr.Middelkoop"));
-		$this->assertEquals("{person: DrMiddelkoop}",$p->display());
 		$this->assertTrue($p->setName("Dr. Middelkoop"));
 		$this->assertEquals("{person: DrMiddelkoop name: Dr. Middelkoop}",$p->display());
 		$this->assertTrue($p->delete());
