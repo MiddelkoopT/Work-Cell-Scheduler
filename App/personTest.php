@@ -3,7 +3,7 @@
 require_once 'Work-Cell-Scheduler/TDD/validator.php';
 include 'Work-Cell-Scheduler/Config/local.php';
 require_once 'personApp.php';
-
+/*
 class PersonTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
@@ -23,7 +23,13 @@ class PersonTestCase extends WebIS\Validator {
 		$this->assertTrue($p->setPerson("DrMiddelkoop"));
 		$this->assertTrue($p->get());
 		$this->assertEquals("{person: DrMiddelkoop name: Dr. Middelkoop}",$p->display());
+		
+		$a=new \WCS\PersonApp();
+		$this->assertTrue($a->add($p));
+		$this->assertContains("Dr. Middelkoop", $a->edit("person.php"));
+		$this->assertFalse($a->load());	
 	}
+	
 	
 }
 
@@ -31,3 +37,5 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 	PersonTestCase::main();
 }
 ?>
+
+*/

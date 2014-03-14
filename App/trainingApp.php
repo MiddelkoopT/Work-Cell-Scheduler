@@ -1,5 +1,6 @@
 <?php
 // TrainingMatrix Copyright 2014 by WebIS Spring 2014 License Apache 2.0
+//TrainingApp.php
 namespace WCS;
 require_once 'Work-Cell-Scheduler/Config/global.php';
 
@@ -19,10 +20,11 @@ class TrainingMatrix{
 	 * Training CRW that the staement binds to.
 	 * @var unknown
 	 */
-	private $training_person;
-	private $training_workstation;
-	private $training_wsp;
-
+	private $worker_ID;
+	private $subcell;
+	private $training;
+	
+	
 	function __construct(){
 		//print "TrainingMatrix>";
 		$this->db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,'WCS');
@@ -31,69 +33,69 @@ class TrainingMatrix{
 		}
 	}
 
-	public function getPeople() {
-		$stmt=$this->db->prepare("SELECT DISTINCT person FROM TrainingMatrix ORDER BY person");
+	public function getworkerID() {
+		$stmt=$this->db->prepare("SELECT DISTINCT worker_ID FROM TrainingMatrix");
 		if($stmt===FALSE){
 			die("prepare error ".$this->db->error);
 		}
-		if($stmt->bind_result($person)===FALSE){
+		if($stmt->bind_result($workerID)===FALSE){
 			die("bind error ".$this->db->error);
 		}
 		if($stmt->execute()===FALSE){
 			die("execute error ".$this->db->error);
 		}
-		$people=array();
+		$worker_ID=array();
 		while($stmt->fetch()){
-			$people[]=$person;
+			$worker_ID[]=$workerID;
 		}
-		return $people;
+		return $worker_ID;
 	}
-	
-	public function getWorkstations() {
-		$stmt=$this->db->prepare("SELECT DISTINCT workstation FROM TrainingMatrix ORDER BY workstation");
+		
+	public function getsubcell() {
+		$stmt=$this->db->prepare("SELECT DISTINCT subcell FROM TrainingMatrix");
 		if($stmt===FALSE){
-			die("prepare error ".$this->db->error);
+			die("prepare error12 ".$this->db->error);
 		}
-		if($stmt->bind_result($workstation)===FALSE){
+		if($stmt->bind_result($subcellNum)===FALSE){
 			die("bind error ".$this->db->error);
 		}
 		if($stmt->execute()===FALSE){
 			die("execute error ".$this->db->error);
+			$stmt->close();
 		}
-		$workstations=array();
+		$subcell=array();
 		while($stmt->fetch()){
-			$workstations[]=$workstation;
+			$subcell[]=$subcellNum;
 		}
-		return $workstations;
+		return $subcell;
 	}
-	
 	function training(){
 		if($this->training_stmt!=NULL){
 			return $this->training_stmt;
 		}
-		$stmt=$this->db->prepare("SELECT wsp FROM TrainingMatrix WHERE person=? AND workstation=?");
+		$stmt=$this->db->prepare("SELECT training FROM TrainingMatrix WHERE worker_ID=? AND subcell=?");
 		if($stmt===FALSE){
 			die("prepare error ".$this->db->error);
 		}
-		if($stmt->bind_param('ss',$this->training_person,$this->training_workstation)===FALSE){
+		if($stmt->bind_param('sd',$this->worker_ID,$this->subcell)===FALSE){
 			die("bind error ".$this->db->error);
 		}
-		if($stmt->bind_result($this->training_wsp)===FALSE){
+		if($stmt->bind_result($this->training)===FALSE){
 			die("bind error ".$this->db->error);
 		}
 		$this->training_stmt=$stmt;
 		return $stmt;
 	}
 	
-	public function getTraining($person,$workstation){
-		$this->training_person=$person;
-		$this->training_workstation=$workstation;
+	public function getTraining($worker_ID,$subcell){
+		$this->worker_ID=$worker_ID;
+		$this->subcell=$subcell;
 		$stmt=$this->training();
 		if($stmt->execute()===FALSE){
 			die("getTraining: ".$this->db->error);
 		}
 		if($stmt->fetch()){
-			return $this->training_wsp;
+			return $this->training;
 		}
 		return 0;
 	}
@@ -105,5 +107,4 @@ class TrainingMatrix{
 	}
 	
 }
-
 ?>

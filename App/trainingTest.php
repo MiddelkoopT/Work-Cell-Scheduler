@@ -10,17 +10,17 @@ class TrainingTestCase extends WebIS\Validator {
 
 	function testTrainingApp() {
 		$t=new \WCS\TrainingMatrix();
-		$this->assertEquals(array('Dr.Middelkoop','JD'),$t->getPeople());
-		$this->assertEquals(array(1010,1020,1030),$t->getWorkstations());
-		$this->assertEquals(0.99,$t->getTraining('JD',1010));
-		$this->assertEquals(0.00,$t->getTraining('Dr.Middelkoop',1040));
+		$this->assertEquals(array('j100','j101','j102','j103','j104','j105','j106',),$t->getworkerID());
+		$this->assertEquals(array(1000,1010,1020,1030,1060,1040,1050),$t->getsubcell());
+		$this->assertEquals(1,$t->getTraining('j100',1020));
+		$this->assertEquals(1,$t->getTraining('j102',1020));
 	}
 	
 	/**
 	 * @depends testTrainingApp
 	 */
 	function testTrainingPage(){
-		$this->assertValidHTML("Web/training.php","Dr.Middelkoop");
+		$this->assertValidHTML("Web/training.php","Training Matrix");
 	}
 
 }
