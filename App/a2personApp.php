@@ -4,7 +4,7 @@ class personApp{
 	 * Database handle
 	 * @var \mysqli
 	 */
-
+ 
 	public $db = NULL;
 	public $name = NULL;
 	public $person = NULL;

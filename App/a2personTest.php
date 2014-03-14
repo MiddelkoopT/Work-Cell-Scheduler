@@ -1,7 +1,7 @@
 <?php
 
 require_once 'a2personApp.php';
- 
+  
 class personTest {
 
 	function test_personApp(){
@@ -27,9 +27,4 @@ class personTest {
 		
 	}
 	
-?>
-		
-
-
-
 ?>
