@@ -1,15 +1,5 @@
 --  Database Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 
--- Worker
-DROP TABLE IF EXISTS Workers;
-CREATE TABLE Workers (
-  workerID integer,
-  name VARCHAR(128),
-  subcell integer,
-  rate double,
-  PRIMARY KEY (workerID)
-);
-  
 -- Person
 DROP TABLE IF EXISTS Person;
 CREATE TABLE Person (
