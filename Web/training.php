@@ -6,27 +6,29 @@
 <title>WCS Training</title>
 </head>
 <body>
-<h1>Ping</h1>
-<p>App:
+<h1>WCS Training Matrix</h1>
+
 <table border='1'>
 
-<tr><th></th>
+<tr><th>Employee ID \ Subcell</th>
 <?php 
 require_once 'Work-Cell-Scheduler/App/trainingApp.php';
 $t=new WCS\TrainingMatrix();
-foreach($t->getWorkstations() as $w){
-	echo "<th>$w\n";
+foreach($t->getSubcell() as $w){
+	echo "<th>$w</td>";
 }
 ?>
 </tr>
+
 <?php 
-foreach($t->getPeople() as $p){
+foreach($t->getEmployeeid() as $p){
 	echo "<tr><th>$p</th>";
-	foreach($t->getWorkstations() as $w) {
+	foreach($t->getSubcell() as $w) {
 		echo "<td>".$t->getTraining($p,$w)."</td>";
 	}		
-	echo "\n";
+	"</tr>";
 }
+
 ?>
 
 </table>

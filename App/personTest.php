@@ -8,21 +8,21 @@ class PersonTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 
-	function testTrainingApp() {
+	function testPersonApp(){
 		$p=new \WCS\Person();
-		$this->assertTrue($p->setPerson("DrMiddelkoop"));
-		$this->assertFalse($p->setPerson("Dr.Middelkoop"));
-		$this->assertEquals("{person: DrMiddelkoop}",$p->display());
-		$this->assertTrue($p->setName("Dr. Middelkoop"));
-		$this->assertEquals("{person: DrMiddelkoop name: Dr. Middelkoop}",$p->display());
+		$this->assertTrue($p->setEmployeeid('Jennifer'));
+		$this->assertEquals("Emloyee ID: Jennifer",$p->display());
+		$this->assertFalse($p->setEmployeeid('Jen.B'));
+		$this->assertTrue($p->setEmployeename('Jen'));
+		$this->assertFalse($p->setEmployeename('Jen1'));
+		$this->assertEquals("Emloyee ID: Jennifer Employee Name: Jen",$p->display());
 		$this->assertTrue($p->delete());
-		$this->assertTrue($p->delete()); // second one should also succeed.
-		$this->assertTrue($p->insert());
-		$this->assertFalse($p->insert(),"record exists, should return false");
-		$p=new \WCS\Person();
-		$this->assertTrue($p->setPerson("DrMiddelkoop"));
-		$this->assertTrue($p->get());
-		$this->assertEquals("{person: DrMiddelkoop name: Dr. Middelkoop}",$p->display());
+		$this->assertTrue($p->delete());
+		$this->assertTrue($p->insert());	
+		$this->assertFalse($p->insert());
+		$this->assertTrue($p->select());
+		
+
 	}
 	
 }
