@@ -54,11 +54,10 @@ class Person {
 	private $db=NULL;
 	
 	function __construct(){
-		$db=@new \mysqli('127.0.0.1','root','webis','WCS');
-		if($db->connect_error){
-			die("Person.construct: cannot connect to database ".$db->connect_error);
+		$this->db = @new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,\WCS\Config::$dbdatabase);
+		if($this->db->connect_error){
+			throw new \Exception("Error unable to connect to database: ".$this->db->connect_error);
 		}
-		$this->db=$db;
 	}
 	
 	function __destruct(){
@@ -75,6 +74,11 @@ class Person {
 		return $str.'}';
 	}
 	
+	/**
+	 * Set person
+	 * @param string $person Alphanumeric username [a-zA-Z0-9]
+	 * @return bool person set.
+	 */
 	function setPerson($person){
 		if(preg_match('/^[a-zA-Z0-9]+$/',$person)){
 			$this->person=$person;
@@ -83,6 +87,18 @@ class Person {
 		return FALSE;
 	}
 	
+	/**
+	 * Set Person name
+	 * @param string $name of person.
+	 */
+	function setName($name){
+		if(preg_match('/^\s*$/',$name)){
+			return FALSE;
+		}
+		$this->name=$name;
+		return TRUE;
+	}
+
 	function getName(){
 		return $this->name;
 	}
@@ -91,18 +107,11 @@ class Person {
 		return $this->person;
 	}
 	
-	function setName($name){
-		if(preg_match('/^\s*$/',$name)){
-			return FALSE;
-		}
-		$this->name=$name;
-		return TRUE;
-	}
-	
 	function write(){
 		$stmt=$this->db->prepare("INSERT INTO Person (person,name) VALUES (?,?)");
 		if($stmt===FALSE){
 			die("Person.write: unable to create statement " . $this->db->error);
+			return FALSE;
 		}
 		if($stmt->bind_param("ss",$this->person,$this->name)===FALSE){
 			die("Person.write: unable to bind " . $this->db->error);
@@ -114,18 +123,42 @@ class Person {
 				return FALSE;
 			}
 			die("Person.write: unable to execute $this->db->errno $this->db->error");
+			return FALSE;
 		}
 		$stmt->close();
 		return TRUE;
 	}
 	
+	/**
+	 * Remove Person
+	 * @return bool TRUE on success (even if record did not exist);
+	 */
 	function delete(){
 		$stmt=$this->db->prepare("DELETE FROM Person WHERE person=?");
 		if($stmt===FALSE){
+			die("WCS/Person.delete> stmt:".$this->db->error);
+			return FALSE;
+		}
+		if($stmt->bind_param('s',$this->person)===FALSE){
+			die("WCS/Person.delete> bind_param:".$this->db->error);
+			return FALSE;
+		}
+		if($stmt->execute()===FALSE){
+			die("WCS/Person.delete> execute:".$this->db->errno." ".$this->db->error);
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
+	function get() {
+		$stmt=$this->db->prepare("SELECT name,rate FROM Person WHERE person=?");
+		if($stmt===FALSE){
 			die("Person.write: unable to create statement " . $this->db->error);
+			return FALSE;
 		}
 		if($stmt->bind_param("s",$this->person)===FALSE){
 			die("Person.write: unable to bind " . $this->db->error);
+			return FALSE;
 		}
 		if($stmt->execute()===FALSE){
 			if($stmt->errno==1062){ // Duplicate Entry
@@ -134,6 +167,7 @@ class Person {
 				return FALSE;
 			}
 			die("Person.write: unable to execute $this->db->errno $this->db->error");
+			return FALSE;
 		}
 		$stmt->close();
 		return TRUE;

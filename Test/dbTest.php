@@ -27,7 +27,7 @@ class DbTestCase extends WebIS\Validator {
 	function testConnection() {
 		// Test connection and create test database
 		$db=new mysqli(WCS\Config::$dbhost,WCS\Config::$dbuser,WCS\Config::$dbpassword,'');
-		$this->assertNotNull($db,"Unable to create database handle");
+		$this->assertNull($db->connect_error,"Unable to create database handle ($db->connect_error)");
 		$this->execute($db,'DROP DATABASE IF EXISTS WCSTDD;');
 		$this->execute($db,'CREATE DATABASE WCSTDD;');
 		$db->close();
