@@ -11,7 +11,7 @@
 <?php 
 require_once 'Work-Cell-Scheduler/App/personApp.php';
 $a=new \WCS\PersonApp();
-$a->add($p);
+$a->load();
 echo $a->edit("person.php");
 
 ?>

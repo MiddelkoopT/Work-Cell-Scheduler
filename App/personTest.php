@@ -9,6 +9,8 @@ class PersonTestCase extends WebIS\Validator {
 	protected static $__CLASS__=__CLASS__;
 
 	function testTrainingApp() {
+		
+		// test write
 		$p=new \WCS\Person();
 		$this->assertTrue($p->setPerson("DrMiddelkoop"));
 		$this->assertFalse($p->setPerson("Dr.Middelkoop"));
@@ -22,6 +24,12 @@ class PersonTestCase extends WebIS\Validator {
 		$this->assertTrue($p->delete());
 		$this->assertTrue($p->write());
 		
+		// Test read
+		$p=new \WCS\Person();
+		$this->assertTrue($p->setPerson('DrMiddelkoop'));
+		$this->assertTrue($p->read(),"Unable to read from database");
+		$this->assertEquals("Dr. Middelkoop",$p->getName(),"Object does not contain Dr. Middelkoop");
+		
 		$a=new \WCS\PersonApp();
 		$this->assertTrue($a->add($p));
 		$this->assertContains("Dr. Middelkoop",$a->edit("person.php"));
@@ -29,6 +37,8 @@ class PersonTestCase extends WebIS\Validator {
 		$_REQUEST['action']='Load';
 		$_REQUEST['person']='DrMiddelkoop';
 		$this->assertTrue($a->load());
+		$this->assertContains("Dr. Middelkoop",$a->edit("person.php"),"Edit does not contain Dr. Middelkoop");
+		
 		
 	}
 	

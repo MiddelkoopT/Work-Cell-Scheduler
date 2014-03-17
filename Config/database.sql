@@ -9,7 +9,7 @@ CREATE TABLE Person (
   PRIMARY KEY (person)
 );
 
-SELECT * FROM Person;
+-- SELECT * FROM Person;
 
 -- Training Matrix
 DROP TABLE IF EXISTS TrainingMatrix;

@@ -24,6 +24,7 @@ class PersonApp {
 			return FALSE;
 		}
 		$this->person=$p;
+		$p->read();
 		return TRUE;
 	}
 	
@@ -118,6 +119,27 @@ class Person {
 		$stmt->close();
 		return TRUE;
 	}
+	
+	/**
+	 * Reads data from the database into the BO.  Retrieves on the $person primary key.
+	 */
+	function read(){
+		$stmt=$this->db->prepare("SELECT name FROM Person WHERE person=?");
+		if($stmt===FALSE){
+			die("Person.read: unable to create statement " . $this->db->error);
+		}
+		if($stmt->bind_param("s",$this->person)===FALSE){
+			die("Person.read: unable to bind_param " . $this->db->error);
+		}
+		if($stmt->bind_result($this->name)===FALSE){
+			die("Person.read: unable to bind_result " . $this->db->error);
+		}
+		if($stmt->execute()===FALSE){
+			die("Person.write: unable to execute $this->db->errno $this->db->error");
+		}
+		return $stmt->fetch();
+	}	
+	
 	
 	function delete(){
 		$stmt=$this->db->prepare("DELETE FROM Person WHERE person=?");
