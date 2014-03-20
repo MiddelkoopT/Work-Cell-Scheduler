@@ -2,18 +2,57 @@
 namespace WCS;
 require_once 'Work-Cell-Scheduler/Config/global.php';
 
+class a2personapp {
+	
+	private $person=NULL;
+	static $counter=0;
+	private $id=0;
+	
+	
+	function __construct(){
+		self::$counter+=1;
+		$this->id=self::$counter;
+	}	
+		
+	function add(a2person $a2person){
+		// add function brings value of $a2person from a2person class to a2personapp class and sets it equal to $person
+		$this->person=$a2person;
+		return TRUE;
+	}
+	
+	function getperson(){
+		if (!isset($__REQUEST["action"]));
+			return FALSE;
+		if ($__REQUEST["id-person"]=$person);
+			return TRUE;	
+	}
+			
+	
+	
+	function edit(){
+		
+		$person=htmlspecialchar($this->a2person->a2getperson());
+		$name=htmlspecialchar($this->a2person->a2getname());
+		$id=$this->id;
+		
+		return;
+		
+		}
+		
+}
+
+
 class a2person {
 	
 	/**
 	 * Database handle
 	 * @var \mysqli
 	 */
-	
 	private $db=NULL;
 	
-	private $a2person_whitelist=NULL;
-	private $a2person_name=NULL;
-	private $a2person_email=NULL;
+	private $a2person=NULL;
+	private $a2name=NULL;
+	private $a2rate=NULL;
 	
 	function __construct(){
 		$this->db = new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,\WCS\Config::$dbdatabase);
@@ -29,28 +68,38 @@ class a2person {
 		}
 	}
 	
+	function a2getperson(){
+		return $this->a2person;
+	}
+	
+	function a2getname(){
+		return $this->a2name;
+		
+		
+	}
+	
 	/**
-	 * Set a2person_whitelist
-	 * @param  string $a2person_whitelist alphabetic [a-zA-Z]
-	 * @return boolean a2person_whitelist
+	 * Set a2person
+	 * @param  string $a2person alphabetic [a-zA-Z]
+	 * @return boolean a2person
 	 */
 		
-	public function seta2person_whitelist($a2person_whitelist){
-		//print "seta2person_whitelist: ".$a2person_whitelist;
-		if (preg_match('/^[a-zA-Z]+$/',$a2person_whitelist)){
-			$this->a2person_whitelist=$a2person_whitelist;
+	public function seta2person($a2person){
+		//print "seta2person: ".$a2person;
+		if (preg_match('/^[a-zA-Z]+$/',$a2person)){
+			$this->a2person=$a2person;
 			Return TRUE;
 		}
 		Return FALSE;
 	}
 	
 	/**
-	 * Set a2person_name
-	 * @param string $a2person_name is person's name
-	 * @return boolean a2person_name set
+	 * Set a2name
+	 * @param string $a2name is person's name
+	 * @return boolean a2name set
 	 */
-	public function seta2person_name($a2person_name){
-		$this->a2person_name=$a2person_name;
+	public function seta2name($a2name){
+		$this->a2name=$a2name;
 		return TRUE;	
 	}
 	
@@ -59,11 +108,11 @@ class a2person {
 	 * @return string human readable display.
 	 */
 	public function display(){
-		$a2person_name='';
-		if(!\is_null($this->a2person_name)){
-			$a2person_name=" name: $this->a2person_name";
+		$a2name='';
+		if(!\is_null($this->a2name)){
+			$a2name=" name: $this->a2name";
 		}
-		return "{person: $this->a2person_whitelist".$a2person_name."}";
+		return "{person: $this->a2person".$a2name."}";
 	}
 	
 	
@@ -74,7 +123,7 @@ class a2person {
 			error_log("WCS/a2person.a2insert> stmt:".$this->db->error);
 			return FALSE;
 		}
-		if($stmt->bind_param("ssd",$this->a2person_whitelist,$this->a2person_name,$this->a2person_email)===FALSE){
+		if($stmt->bind_param("ssd",$this->a2person,$this->a2name,$this->a2rate)===FALSE){
 			error_log("WCS/a2person.a2insert> bind_param:".$this->db->error);
 			return FALSE;
 		}
@@ -98,7 +147,7 @@ class a2person {
 			error_log("WCS/a2person.a2delete> stmt:".$this->db->error);
 			return FALSE;
 		}
-		if ($stmt->bind_param('s',$this->a2person_whitelist)===FALSE){
+		if ($stmt->bind_param('s',$this->a2person)===FALSE){
 			error_log("WCS/a2person.a2delete> bind_param:".$this->db->error);
 			return FALSE;
 		}
@@ -118,12 +167,12 @@ class a2person {
 			return FALSE;
 		}
 		
-		if ($stmt->bind_param('s',$this->a2person_whitelist)===FALSE){
+		if ($stmt->bind_param('s',$this->a2person)===FALSE){
 			echo "WCS/a2person.a2get> bind_param error";
 			return FALSE;
 		}
 		
-		if ($stmt->bind_result($this->a2person_name,$this->a2person_email)===FALSE){
+		if ($stmt->bind_result($this->a2name,$this->a2rate)===FALSE){
 			echo "WCS/a2person.a2get> bind_result error";
 			return FALSE;
 		}
