@@ -20,22 +20,42 @@ class a2personapp {
 		return TRUE;
 	}
 	
-	function getperson(){
-		if (!isset($__REQUEST["action"]));
-			return FALSE;
-		if ($__REQUEST["id-person"]=$person);
-			return TRUE;	
-	}
+	//function getperson(){
+		//if (!isset($__REQUEST["action"]));
+		//return FALSE;
+		//if ($__REQUEST["id-person"]=$person);
+		//return TRUE;	
+	//}
 			
+	function process(){
+		$this->save();
+		$this->load();
+			echo $this->edit();
+	}	
 	
+	function save(){
+		if(!isset($__REQUEST["action"])){
+			return FALSE;
+		}
+		if($__REQUEST["action"]!="update"){
+			return FALSE;
+		}
+		if($__REQUEST["id-person"]===$this->a2person->a2getperson()){
+			return TRUE;	
+		}
+	}
 	
 	function edit(){
-		
 		$person=htmlspecialchar($this->a2person->a2getperson());
 		$name=htmlspecialchar($this->a2person->a2getname());
 		$id=$this->id;
 		
-		return;
+		return <<<HTML
+		<table border="1">
+			<tr><td>Person</td><td><input type="text" name="$id-person" value="$person"></td></tr>
+			<tr><td>Name</td> <td><input type="text" name="$id-name" value="$name"></td></tr>
+		</table>
+HTML;
 		
 		}
 		

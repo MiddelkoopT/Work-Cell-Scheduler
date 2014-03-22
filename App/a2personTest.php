@@ -35,7 +35,7 @@ class a2personTestCase extends WebIS\Validator {
 		$this->assertTrue($n->seta2person("MikeGroene"),"Set a2person failed");
 		$h=new \WCS\a2personapp();
 		$this->assertTrue($h->add($n),"adding a2person to a2personapp failed");
-		
+		$this->assertTrue($h->save(),"error message");
 		
 		
 	}
