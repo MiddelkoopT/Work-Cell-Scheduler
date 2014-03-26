@@ -17,7 +17,9 @@ caption {caption-side:bottom;}
 <?php 
 require_once 'Work-Cell-Scheduler/App/trainingApp.php';
 $t=new WCS\TrainingMatrix();
-foreach($t->getsubcell() as $w){
+$subcells=$t->getsubcell();
+sort($subcells);
+foreach($subcells as $w){
 	echo "<th>$w\n";
 }
 ?>
@@ -26,7 +28,7 @@ foreach($t->getsubcell() as $w){
 
 foreach($t->getworkerID() as $p){
 	echo "<tr><th>$p</th>";
-	foreach($t->getsubcell() as $s) {
+	foreach($subcells as $s) {
 		echo "<td>".$t->getTraining($p,$s)."</td>";
 	}		
 	echo "\n";
