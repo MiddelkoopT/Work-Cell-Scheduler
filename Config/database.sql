@@ -1,5 +1,15 @@
 --  Database Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 
+-- Worker2
+DROP TABLE IF EXISTS Workers2;
+CREATE TABLE Workers2 (
+  workerID integer,
+  name VARCHAR(128),
+  rateSub1 double,
+  rateSub2 double,
+  PRIMARY KEY (workerID)
+);
+
 -- Worker
 DROP TABLE IF EXISTS Workers;
 CREATE TABLE Workers (
