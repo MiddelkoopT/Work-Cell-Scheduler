@@ -9,24 +9,30 @@ CREATE TABLE Person (
   PRIMARY KEY (person)
 );
 
+-- Employee
+DROP TABLE IF EXISTS Employee;
+CREATE TABLE Employee (
+  employee VARCHAR(30),
+  name VARCHAR(128),
+  rate FLOAT,
+  PRIMARY KEY (employee)
+);
+
 -- SELECT * FROM Person;
 
 -- Training Matrix
 DROP TABLE IF EXISTS TrainingMatrix;
 CREATE TABLE TrainingMatrix (
   person VARCHAR(30),
-  cell integer,
   workstation integer,
-  wcp double,
-  wsp double,
-  PRIMARY KEY (person,cell,workstation)
+  training double,
+  ergo double,
+  PRIMARY KEY (person,workstation)
 );
 
-INSERT INTO TrainingMatrix (person,cell,workstation,wcp,wsp) VALUES 
-	('Dr.Middelkoop',1000,1010,0.19,0.19),
-	('Dr.Middelkoop',1000,1020,0.55,0.32),
-	('JD',1000,1010,0.99,0.99),
-	('JD',1000,1030,0.90,0.10);
+INSERT INTO TrainingMatrix (person,workstation,training,ergo) VALUES 
+	('Dr.Middelkoop',1000,0.19,0.19),
+	('JD',1000,0.90,0.10);
 
 	
 -- SELECT * FROM TrainingMatrix;
