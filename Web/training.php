@@ -12,9 +12,9 @@
 
 <tr><th></th>
 <?php 
-require_once 'Work-Cell-Scheduler/App/trainingApp.php';
-$t=new WCS\TrainingMatrix();
-foreach($t->getWorkstations() as $w){
+require_once 'Work-Cell-Scheduler/App/EmployeeApp.php';
+$t=new WCS\Employee();
+foreach($t->Employee() as $w){
 	echo "<th>$w\n";
 }
 ?>

@@ -17,7 +17,9 @@ CREATE TABLE Employee (
   rate FLOAT,
   PRIMARY KEY (employee)
 );
-
+INSERT INTO Employee (employee,name,rate) VALUES 
+	('JoeAhlbrandt','Joe Ahlbrandt',10),
+	('JDS','JD S',10);
 -- SELECT * FROM Person;
 
 -- Training Matrix

@@ -82,6 +82,15 @@ class EmployeeApp {
 		</form>
 HTML;
 	}
+	
+	function displayEmployee(){
+		$result = mysql_query("SELECT employee,name FROM Employee");
+		while($row = mysql_fetch_array($result)){
+			print "<tr><td>".$row['employee']."</td><td>".$row['name']."</td></tr>";
+		}
+		print "</table>";
+	}
+	
 }
 
 class Employee {
