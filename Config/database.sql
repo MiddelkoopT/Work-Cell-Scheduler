@@ -10,6 +10,9 @@ CREATE TABLE Workers2 (
   PRIMARY KEY (workerID)
 );
 
+INSERT INTO Workers2 (workerID, name, rateSub1, rateSub2) VALUES
+	(102,'Mark Dintelman',0.9,0.8);
+
 -- Worker
 DROP TABLE IF EXISTS Workers;
 CREATE TABLE Workers (

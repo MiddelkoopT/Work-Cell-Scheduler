@@ -9,16 +9,16 @@ class WorkersTestCase extends WebIS\Validator {
 	protected static $__CLASS__=__CLASS__;
 
 	function testworkers(){
-		$w= new \WCS\Workers();
+		$w= new \WCS\Workers2();
 		$this->assertTrue($w->SetID("102"));
 		$this->assertFalse($w->SetID("Mark"));
 		$this->assertFalse($w->SetName(" "));
 		$this->assertTrue($w->SetName("Mark Dintelman"));
 		$this->assertTrue($w->Setratesub1("0.9"));
 		$this->assertTrue($w->Setratesub2("0.8"));
-		$this->assertTrue($w->delete());
-		$this->assertTrue($w->insert());
 		
+		$this->assertEquals(array('102'),$w->getworkerID());
+		$this->assertEquals(array('0.9'),$w->getrateSub1());
 	
 		
 

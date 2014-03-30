@@ -3,7 +3,7 @@
 namespace WCS;
 require_once 'Work-Cell-Scheduler/Config/global.php';
 
-class Workers {
+class Workers2 {
 
 
 	private $db=NULL;

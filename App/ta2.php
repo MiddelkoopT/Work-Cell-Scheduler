@@ -156,9 +156,12 @@ public function getworkerID() {
 	
 	}
 	public function getrate() {
-		$stmt=$this->db->prepare("SELECT DISTINCT rate FROM Workers ORDER BY rate");
+		$stmt=$this->db->prepare("SELECT DISTINCT rate FROM Workers WHERE workerID=? AND subcell=?");
 		if($stmt===FALSE){
 			die("prepare error ".$this->db->error);
+		}
+		if($stmt->bind_param('ii',$this->workerID,$this->subcell)===FALSE){
+			die("bind error ".$this->db->error);
 		}
 		if($stmt->bind_result($rate)===FALSE){
 			die("bind error ".$this->db->error);
@@ -178,45 +181,7 @@ public function getworkerID() {
 }
 
 
-$t= new Workers();
-$t->SetID("102");
-$t->SetName("Mark Dintelman");
-$t->SetSubcell("10");
-$t->SetRate("9");
-$t->insert();
-$t->delete();
-$t->insert();
-$t->getworkerID();
 
-$t1= new Workers();
-$t1->SetID("102");
-$t1->SetName("Mark Dintelman");
-$t1->SetSubcell("11");
-$t1->SetRate("5");
-$t1->insert();
-$t1->delete();
-$t1->insert();
-$t1->getworkerID();
-
-$tt= new Workers();
-$tt->SetID("103");
-$tt->SetName("Max Smith");
-$tt->SetSubcell("11");
-$tt->SetRate("10");
-$tt->insert();
-$tt->delete();
-$tt->insert();
-$tt->getworkerID();
-
-$c= new Workers();
-foreach($c->getworkerID() as $id)
-	echo $id;
-foreach($c->getname() as $name)
-	echo $name;
-foreach($c->getsubcell() as $sub)
-	echo $sub;
-foreach($c->getrate() as $r)
-	echo $r;
 
 
 
