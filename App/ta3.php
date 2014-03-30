@@ -3,6 +3,97 @@
 namespace WCS;
 require_once 'Work-Cell-Scheduler/Config/global.php';
 
+
+class Workers2App {
+	private $workerID=NULL;
+
+	function add(Workers2 $ID){
+		$this->workerID=$ID;
+		return TRUE;
+	}
+
+	function Apply($p){
+		$this->load();
+		$this->save();
+		echo $this->edit($p);
+	}
+
+	function get(){
+		if($this->workerID===NULL){
+			$this->workerID=new Workers2();
+		}
+		if(!$this->workerID->SetID($_REQUEST['workerID'])){
+			return FALSE;
+		}
+		if(isset($_REQUEST['name']) and !$this->workerID->SetName($_REQUEST['name'])){
+			return FALSE;
+		}
+		if(isset($_REQUEST['rateSub1']) and !$this->workerID->SetrateSub1($_REQUEST['rateSub1'])){
+			return FALSE;
+		}
+		if(isset($_REQUEST['rateSub2']) and !$this->workerID->SetrateSub2($_REQUEST['rateSub2'])){
+			return FALSE;
+		}
+	}
+	function load(){
+		if(!isset($_REQUEST['action'])){
+			return FALSE;
+		}
+		if($_REQUEST['action']!='Load'){
+			return FALSE;
+		}
+		$this->get();
+		if($this->workerID->getworker()===FALSE){
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
+	function save(){
+		if($this->workerID===NULL){
+			$this->workerID=new Workers2();
+		}
+		if(!isset($_REQUEST['action'])){
+			return FALSE;
+		}
+		if($_REQUEST['action']!='Update'){
+			return FALSE;
+		}
+		$this->get();
+		if($this->workerID->delete()===FALSE){
+			print ":Workers2App.save: unable to delete()";
+			return FALSE;
+		}
+		if($this->workerID->insert()===FALSE){
+			print ":Workers2App.save: unable to write()";
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
+	function edit($action){
+		$workerID=htmlspecialchars($this->workerID->getworkerID());
+		$name=htmlspecialchars($this->workerID->getname());
+		$rateSub1=htmlspecialchars($this->workerID->getrateSub1());
+		$rateSub2=htmlspecialchars($this->workerID->getrateSub2());
+		return <<<HTML
+		<form action="$action" method="GET">
+		<table border="1">
+		  <tr><td>WorkerID</td><td><input type="text" name="workerID" value="$workerID"></td></tr>
+    	  <tr><td>Name</td>  <td><input type="text" name="name"   value="$name"></td></tr>
+    	  <tr><td>SubCell 1</td>  <td><input type="text" name="ratesub1"   value="$rateSub1"></td></tr>
+    	  <tr><td>Subcell 2</td>  <td><input type="text" name="ratesub2"   value="$rateSub2"></td></tr>
+    	</table>
+		<input type="submit" name="action" value="Update">
+		<input type="submit" name="action" value="Load">
+		</form>
+HTML;
+	}
+	
+
+}
+
+
 class Workers2 {
 
 
@@ -171,6 +262,28 @@ class Workers2 {
 		return $rateSub2;
 
 
+	}
+	
+	function getworker(){
+		$stmt=$this->db->prepare("SELECT name,rateSub1,rateSub2 FROM Workers2 WHERE workerID=?");
+		if($stmt===FALSE){
+			die("prepare error ".$this->db->error);
+		}
+		if($stmt->bind_param('i', $this->workerID)===FALSE){
+			error_log("WCS/Workers2.getworker> bind_param:".$this->db->error);
+			return FALSE;
+		}
+		if($stmt->bind_result($this->name,$this->rateSub1,$this->rateSub2)===FALSE){
+			die("bind error ".$this->db->error);
+		}
+		if($stmt->execute()===FALSE){
+			die("execute error ".$this->db->error);
+		}
+		if($stmt->fetch()==FALSE){
+			$stmt->close();
+			return FALSE;
+		}
+		return TRUE;
 	}
 }
 

@@ -18,7 +18,9 @@ class WorkersTestCase extends WebIS\Validator {
 		$this->assertTrue($w->Setratesub2("0.8"));
 		
 		$this->assertEquals(array('102'),$w->getworkerID());
+		$this->assertEquals(array('Mark Dintelman'),$w->getname());
 		$this->assertEquals(array('0.9'),$w->getrateSub1());
+		$this->assertEquals(array('0.8'),$w->getrateSub2());
 	
 		
 
