@@ -10,8 +10,8 @@
 <p>App:
 <?php 
 require_once 'Work-Cell-Scheduler/App/a2personApp.php';
-
-
+$h=new \WCS\a2personapp();
+$h->process("a2person.php");
 ?>
 
 <table border="1">

@@ -32,10 +32,30 @@ class a2personTestCase extends WebIS\Validator {
 	 */
 	function testa2personapp() {
 		$n=new \WCS\a2person();
-		$this->assertTrue($n->seta2person("MikeGroene"),"Set a2person failed");
+		$this->AssertTrue($n->seta2person("Mike Groene"),"Set a2person failed");
 		$h=new \WCS\a2personapp();
-		$this->assertTrue($h->add($n),"adding a2person to a2personapp failed");
-		$this->assertTrue($h->save(),"error message");
+		$this->AssertTrue($h->add($n),"adding a2person to a2personapp failed");
+		$this->AssertContains("Mike Groene",$h->edit("a2person.php"),"failed to edit");
+		
+		$h=new \WCS\a2personapp();
+		$this->AssertFalse($h->load);
+		$__REQUEST('action')='Load';
+		$__REQUEST('person')='MikeGroene';
+		$this->AssertTrue($h->load());
+		$this->AssertContains("Mike Groene",$n->a2getname());
+		$__REQUEST['action']='Update';
+		$__REQUEST['person']='MikeGroene';
+		$__REQUEST['name']='Mike Groene';
+		$this->AssetTrue($h->save());
+	}
+
+	/**
+	 * @depends testa2personapp
+	 */
+	function testa2personweb() {
+		$this->AssertValidHTML('Web/a2person.php');
+		$this->AssertValidHTML('Web/a2person.php','Mike Groene',array('action'=>'Load','person'=>'MikeGroene'));
+		$this->AssertValidHTML('Web/a2person.php','Michael Groene',array('action'=>'Update','person'=>'MikeGroene','name'=>'Michael Groene'));
 		
 		
 	}

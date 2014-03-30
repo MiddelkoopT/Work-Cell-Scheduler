@@ -20,29 +20,58 @@ class a2personapp {
 		return TRUE;
 	}
 	
-	//function getperson(){
-		//if (!isset($__REQUEST["action"]));
-		//return FALSE;
-		//if ($__REQUEST["id-person"]=$person);
-		//return TRUE;	
-	//}
+	
 			
-	function process(){
+	function process($page){
 		$this->save();
 		$this->load();
-			echo $this->edit();
+		echo $this->edit($page);
 	}	
 	
+	function getperson(){
+		if($this->person===NULL){
+			$this->person= new a2person();
+		}
+		if(!$this->person->seta2person($__REQUEST['person'])){
+			return FALSE;
+		}
+		if(isset($__REQUEST['name']) and !$this->person->seta2name($__REQUEST['name'])){
+			return FALSE;
+		}
+	}
+	
+	function load(){
+		if(!isset($__REQUEST['action'])){
+			return FALSE;
+		}
+		if($__REQUEST['action']!='Load'){
+			return FALSE;
+		}
+		$this->getperson();
+		if($this->person->a2get()===FALSE){
+			return FALSE;
+		}
+		return TRUE;
+	}
+	
 	function save(){
-		if(!isset($__REQUEST["action"])){
+		$this->person=new a2person();
+		
+		if(!isset($__REQUEST['action'])){
 			return FALSE;
 		}
-		if($__REQUEST["action"]!="update"){
+		if($__REQUEST['action']!='update'){
 			return FALSE;
 		}
-		if($__REQUEST["id-person"]===$this->a2person->a2getperson()){
-			return TRUE;	
+		$this->getperson();
+		
+		if($this->person->a2delete()===FALSE){
+			return FALSE;	
 		}
+		if($this->person->a2insert()===FALSE){
+			return FALSE;
+		}
+		return TRUE;
 	}
 	
 	function edit(){
@@ -51,10 +80,15 @@ class a2personapp {
 		$id=$this->id;
 		
 		return <<<HTML
+		<form>
 		<table border="1">
 			<tr><td>Person</td><td><input type="text" name="$id-person" value="$person"></td></tr>
 			<tr><td>Name</td> <td><input type="text" name="$id-name" value="$name"></td></tr>
 		</table>
+					
+		<input type="submit" name="action" value="Load">
+		<input type="submit" name="action" value="Update">
+		<\form>
 HTML;
 		
 		}
