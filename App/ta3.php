@@ -72,10 +72,10 @@ class Workers2App {
 	}
 	
 	function edit($action){
-		$workerID=htmlspecialchars($this->workerID->getworkerID());
-		$name=htmlspecialchars($this->workerID->getname());
-		$rateSub1=htmlspecialchars($this->workerID->getrateSub1());
-		$rateSub2=htmlspecialchars($this->workerID->getrateSub2());
+		$workerID=htmlspecialchars($this->workerID->getworkerIDs());
+		$name=htmlspecialchars($this->workerID->getnames());
+		$rateSub1=htmlspecialchars($this->workerID->getrateSub1s());
+		$rateSub2=htmlspecialchars($this->workerID->getrateSub2s());
 		return <<<HTML
 		<form action="$action" method="GET">
 		<table border="1">
@@ -85,7 +85,7 @@ class Workers2App {
     	  <tr><td>Subcell 2</td>  <td><input type="text" name="ratesub2"   value="$rateSub2"></td></tr>
     	</table>
 		<input type="submit" name="action" value="Update">
-		<input type="submit" name="action" value="Load">
+    	<input type="submit" name="action" value="Load">
 		</form>
 HTML;
 	}
@@ -125,6 +125,10 @@ class Workers2 {
 		}
 		RETURN FALSE;
 	}
+	
+	function getworkerIDs(){
+		return $this->workerID;
+	}
 
 	function SetName($name){
 		if(preg_match('/^\s*$/',$name)){
@@ -133,16 +137,28 @@ class Workers2 {
 		$this->name=$name;
 		return TRUE;
 	}
+	
+	function getnames(){
+		return $this->name;
+	}
 
 	public function Setratesub1($subcell1){
 			$this->rateSub1=$subcell1;
 			RETURN TRUE;
 	
 	}
+	
+	function getrateSub1s(){
+		return $this->rateSub1;
+	}
 
 	public function SetrateSub2($sub2){
 			$this->rateSub2=$sub2;
 			RETURN TRUE;
+	}
+	
+	function getrateSub2s(){
+		return $this->rateSub2;
 	}
 	
 	public function insert(){
