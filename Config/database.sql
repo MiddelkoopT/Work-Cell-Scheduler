@@ -30,10 +30,37 @@ SELECT * FROM TrainingMatrix;
 SELECT DISTINCT subcell FROM TrainingMatrix;
 SELECT DISTINCT worker_ID FROM TrainingMatrix;
 
-DROP TABLE IF EXISTS Worker;
-CREATE TABLE Worker (
+DROP TABLE IF EXISTS WorkerInfo;
+CREATE TABLE WorkerInfo (
  worker_ID VARCHAR(30),	
  worker_first VARCHAR(30),	
  worker_last VARCHAR(30),	
 PRIMARY key (worker_ID)
 );
+
+INSERT INTO WorkerInfo (worker_ID, worker_first, worker_last) VALUES
+	('j100','JD','Stumpf'),
+	('j101','Tupac','Shakur'),
+	('j102','Tom','Petty');
+	
+SELECT * FROM WorkerInfo;
+
+
+DROP TABLE IF EXISTS Subcell;
+CREATE TABLE Subcell(
+	subcell integer,
+PRIMARY key (subcell)
+);
+
+INSERT INTO Subcell (subcell) VALUES
+	(1000),
+	(1010),
+	(1020),
+	(1030),
+	(1040),
+	(1050),
+	(1060);
+	
+SELECT * FROM Subcell;
+
+

@@ -36,6 +36,9 @@ foreach($t->getworkerID() as $p){
 ?>
 
 </table>
-<p><b>Note:</b>  Left column is the Worker_ID. Top row is the subcell</p>
+<p><b>Note:</b>  Left column is the Worker_ID. Top row is the subcell</p><br>
+<p><b>Coming Soon:</b>  On Page Live Edit of Static Training Matrix Display </p>
+<br>
+<a href="http://127.0.0.1:8000/Work-Cell-Scheduler/Web/">Back to Index Page</a> 
 </body>
 </html>
