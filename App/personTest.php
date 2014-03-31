@@ -8,7 +8,7 @@ class PersonTestCase extends WebIS\Validator {
 
 	protected static $__CLASS__=__CLASS__;
 
-	function testPersonApp(){
+	function testPerson(){
 		$p=new \WCS\Person();
 		$this->assertTrue($p->setEmployeeid('Jennifer'));
 		$this->assertEquals("Emloyee ID: Jennifer",$p->display());
@@ -24,6 +24,27 @@ class PersonTestCase extends WebIS\Validator {
 		
 
 	}
+	
+	function testPersonApp(){
+		$p=new \WCS\Person();
+		$this->assertTrue($p->setEmployeename('Jen'));
+		
+		$a=new \WCS\PersonApp();
+		$this->assertTrue($a->add($p));
+		$this->assertContains('Jen', $a->edit("person.php"),"edit problem");
+		
+		$a=new \WCS\PersonApp();
+		$this->assertFalse($a->load());
+		$_REQUEST["action"]='Load';
+		$_REQUEST["person"]='Jennifer';
+		$this->assertTrue($a->load());
+		$this->assertContains('Jen',$p->getName());
+		$_REQUEST["action"]='Update';
+		$_REQUEST["person"]='Jennifer';
+		$_REQUEST["name"]='Jen';
+		$this->assertTrue($a->save());
+	}
+	
 	
 }
 

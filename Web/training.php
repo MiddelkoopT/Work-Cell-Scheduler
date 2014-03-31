@@ -29,9 +29,36 @@ foreach($t->getEmployeeid() as $p){
 	"</tr>";
 }
 
+
 ?>
 
+
+
 </table>
+
+
+<br></br>
+
+Add training below:
+<?php
+$a=new \WCS\TrainingMatrixApp();
+$a->process("training.php");
+?>
+
+
+<br></br>
+
+
+<a
+href="http://127.0.0.1:8000/Work-Cell-Scheduler/Web/">
+Go to index page
+</a>
+
+
+
+
+
+
 
 </body>
 </html>

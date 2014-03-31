@@ -8,6 +8,28 @@ CREATE TABLE Person (
 	PRIMARY KEY (employeeid)
 );
 
+INSERT INTO Person (employeeid,employeename) VALUES 
+	('JB','Jen Bergman'),
+	('JS','JD Stumpf'),
+	('MD','Mike Daniel');
+
+SELECT * FROM Person;
+
+
+-- Subcell
+DROP TABLE IF EXISTS Subcell;
+CREATE TABLE Subcell (
+	subcell integer,
+	PRIMARY KEY (subcell)
+);
+
+INSERT INTO Subcell (subcell) VALUES 
+	(1),
+	(2),
+	(3);
+
+SELECT * FROM Subcell;
+
 
 -- Training Matrix
 DROP TABLE IF EXISTS TrainingMatrix;
@@ -16,7 +38,7 @@ CREATE TABLE TrainingMatrix (
   employeename VARCHAR(30),
   subcell integer,
   training integer,
-  PRIMARY KEY (employeeid,employeename,subcell)
+  PRIMARY KEY (employeeid,subcell)
 );
 
 INSERT INTO TrainingMatrix (employeeid,employeename,subcell,training) VALUES 
@@ -28,7 +50,7 @@ INSERT INTO TrainingMatrix (employeeid,employeename,subcell,training) VALUES
 
 
 SELECT * FROM TrainingMatrix;
-
+SELECT training FROM TrainingMatrix WHERE employeeid='JB' AND subcell='1';
 
 -- Ergo Score Matrix
 DROP TABLE IF EXISTS ErgoMatrix;

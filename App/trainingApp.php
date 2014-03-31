@@ -3,6 +3,52 @@
 namespace WCS;
 require_once 'Work-Cell-Scheduler/Config/global.php';
 
+
+class TrainingMatrixApp{
+	
+	public $employeeid=NULL;
+	public $subcell=NULL;
+	public $training=NULL;
+	
+	function addemployeeid(TrainingMatrix $training_employeeid){
+		$this->employeeid=$training_employeeid;
+	}
+	
+	function addsubcell(TrainingMatrix $training_subcell){
+		$this->subcell=$training_subcell;
+	}
+	
+	
+	function process($page){
+//		$this->load();
+//		$this->save();
+		echo $this->edit($page);
+	}
+	
+	
+
+	
+	function edit($action){
+		$employeeid=htmlspecialchars($this->employeeid);
+		$subcell=htmlspecialchars($this->subcell);
+		$training=htmlspecialchars($this->training);
+		return <<<HTML
+		<form action="$action" method="GET">
+		<table border="1">
+		<tr><td>Employee ID:</td><td><input type="text" name="employeeid" value="$employeeid"></td></tr>
+		<tr><td>Subcell:</td> <td><input type="text" name="subcell" value="$subcell"></td></tr>
+		<tr><td>Training:</td> <td><input type="text" name="training" value="$training"></td></tr>
+		</table>
+		<input type="submit" name="action" value="Update">
+		<input type="submit" name="action" value="Load">
+		</form>
+HTML;
+	}
+		
+	
+}
+
+
 class TrainingMatrix{
 
 	/**
@@ -97,6 +143,11 @@ class TrainingMatrix{
 		}
 		return 0;
 	}
+	
+	
+
+	
+	
 	
 	function __destruct() {
 		if($this->db!=NULL){
