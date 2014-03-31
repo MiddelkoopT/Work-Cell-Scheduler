@@ -1,4 +1,5 @@
 <?php
+//Joe Ahlbrandt assignment a3
 namespace WCS;
 //include ("outputTable.php");
 

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +9,8 @@
 <body>
 <p>Training </p>
 <?php
+//Joe Ahlbrandt assignment a3
+
 //include ("config.php");
 //include 'config.php';
 
