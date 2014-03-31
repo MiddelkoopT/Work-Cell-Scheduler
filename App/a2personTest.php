@@ -32,15 +32,15 @@ class a2personTestCase extends WebIS\Validator {
 	 */
 	function testa2personapp() {
 		$n=new \WCS\a2person();
-		$this->AssertTrue($n->seta2person("Mike Groene"),"Set a2person failed");
+		$this->AssertTrue($n->seta2person("MikeGroene"),"Set a2person failed");
 		$h=new \WCS\a2personapp();
 		$this->AssertTrue($h->add($n),"adding a2person to a2personapp failed");
 		$this->AssertContains("Mike Groene",$h->edit("a2person.php"),"failed to edit");
 		
 		$h=new \WCS\a2personapp();
 		$this->AssertFalse($h->load);
-		$__REQUEST('action')='Load';
-		$__REQUEST('person')='MikeGroene';
+		$__REQUEST['action']='Load';
+		$__REQUEST['person']='MikeGroene';
 		$this->AssertTrue($h->load());
 		$this->AssertContains("Mike Groene",$n->a2getname());
 		$__REQUEST['action']='Update';
