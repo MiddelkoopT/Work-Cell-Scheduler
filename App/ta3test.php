@@ -32,18 +32,28 @@ class WorkersTestCase extends WebIS\Validator {
 		
 		
 		$a=new \WCS\Workers2App();
-		$this->assertFalse($a->load(),"Should not load empty person");
+		$this->assertFalse($a->load(),"Should not load empty workerID");
 		$_REQUEST['action']='Load';
 		$_REQUEST['workerID']='102';
 		$this->assertTrue($a->load(),"workerID:102 is not in the database");
 		$this->assertContains("Mark Dintelman",$p->getnames(),"WorkerID object does not contain name");
-		$this->assertEquals(array("0.9"),$p->getrateSub1(),"WorkerID object does not contain name");
+		$this->assertEquals(array("0.9"),$p->getrateSub1(),"WorkerID object does not contain rateSub1");
 		$_REQUEST['action']='Update';
 		$_REQUEST['workerID']='102';
 		$_REQUEST['name']='Mark Dintelman';
 		$_REQUEST['rateSub1']='0.9';
 		$_REQUEST['rateSub2']='0.8';
 		$this->assertTrue($a->save(),"Cannot save");
+		
+	}
+	function testTA3Web(){
+		$this->assertValidHTML('Web/ta3.php');
+		$this->assertValidHTML('Web/ta3.php','Mark Dintelman',
+				array('action'=>'Load','workerID'=>'102','name'=>'Mark Dintelman','rateSub1'=>'0.9','rateSub2'=>'0.8'),
+				"unable to load from page");
+		$this->assertValidHTML('Web/ta3.php','Max',
+				array('action'=>'Update','workerID'=>'102','name'=>'Max','rateSub1'=>'1','rateSub2'=>'0.5'),
+				"unable to save from page");
 		
 	}
 	

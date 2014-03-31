@@ -81,8 +81,8 @@ class Workers2App {
 		<table border="1">
 		  <tr><td>WorkerID</td><td><input type="text" name="workerID" value="$workerID"></td></tr>
     	  <tr><td>Name</td>  <td><input type="text" name="name"   value="$name"></td></tr>
-    	  <tr><td>SubCell 1</td>  <td><input type="text" name="ratesub1"   value="$rateSub1"></td></tr>
-    	  <tr><td>Subcell 2</td>  <td><input type="text" name="ratesub2"   value="$rateSub2"></td></tr>
+    	  <tr><td>SubCell 1</td>  <td><input type="text" name="rateSub1"   value="$rateSub1"></td></tr>
+    	  <tr><td>Subcell 2</td>  <td><input type="text" name="rateSub2"   value="$rateSub2"></td></tr>
     	</table>
 		<input type="submit" name="action" value="Update">
     	<input type="submit" name="action" value="Load">
