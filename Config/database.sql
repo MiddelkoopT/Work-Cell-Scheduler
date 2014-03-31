@@ -1,6 +1,6 @@
 --  Database Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 
--- Worker2
+-- Worker2 table
 DROP TABLE IF EXISTS Workers2;
 CREATE TABLE Workers2 (
   workerID integer,

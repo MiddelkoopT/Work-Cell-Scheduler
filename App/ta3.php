@@ -206,7 +206,7 @@ class Workers2 {
 			die("bind error ".$this->db->error);
 		}
 		if($stmt->execute()===FALSE){
-			die("execute error ".$this->db->error);
+			die("execute error  ".$this->db->error);
 		}
 		$workerID=array();
 		while($stmt->fetch()){
