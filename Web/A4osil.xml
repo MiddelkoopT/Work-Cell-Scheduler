@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osil xmlns="os.optimizationservices.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="os.optimizationservices.org http://www.optimizationservices.org/schemas/OSiL.xsd">
+	<instanceHeader>
+		<name>First OSiL assignment</name>
+		<source>Timothy Middelkoop</source>
+		<description>
+			max 6x_0 + 3x_1 + 1x_2 + 7x_3
+			
+			s.t.:
+     			1x_0 + 2x_2 + 5x_3 &lt;= 10
+    				   1x_2 + 4x_3 &lt;= 20
+    			x_0 &gt;=0, x_2 &gt;= 0, x_3 &gt;= 0
+    			
+    		Solution 
+    						
+			OSSolverService -osil A4.osil -osrl A4.osrl
+		</description>
+	</instanceHeader>
+	<instanceData>
+		<variables numberOfVariables="4">
+			<var name="a" />
+			<var name="b" />
+			<var name="c" />
+			<var name="d" />
+			
+		</variables>
+		<objectives>
+			<obj maxOrMin="max" numberOfObjCoef="4">
+				<coef idx="0">6</coef>
+				<coef idx="1">3</coef>
+				<coef idx="2">1</coef>
+				<coef idx="3">7</coef>
+			</obj>
+		</objectives>
+		<constraints numberOfConstraints="2">
+			<con ub="10"/>
+			<con ub="20"/>
+		</constraints>
+		<linearConstraintCoefficients numberOfValues="5">
+			<start>
+				<el>0</el>
+				<el>3</el>
+				<el>5</el>
+			</start>
+			<colIdx>
+				<el>0</el><el>2</el><el>3</el>
+				<el>2</el><el>3</el>
+			</colIdx>
+			<value>
+				<el>1</el><el>2</el><el>5</el>
+				<el>1</el><el>4</el>			
+			</value>
+		</linearConstraintCoefficients>
+	</instanceData>
+</osil>
