@@ -197,12 +197,12 @@ function solution(){
 	return (int)$osrl->optimization->solution->objectives->values->obj;
 }
 
-//assert(solution()===0);
+//assertEquals(0,solution());
 
 // A bit troublesome since it generates warnings
 // Not all that useful as well.
 
-// Problem 13: Refactor solve and solution and fix warnings. Call it solveOsil()
+// Problem 13: Refactor solve and solution and fix warnings. Call it solveProblem()
 // This generates a warning, the XML emitted is non-conforming, fix.
 // The xmlns needs a proper "uri" so we add http:// to the xmlns string.
 // New function takes an SimpleXMLElement and returns the solution.
@@ -211,7 +211,7 @@ function solution(){
 // use preg_replace to alter the file.
 // remove the files with unlink() when done.
 
-function solveOsil(SimpleXMLElement $osil){
+function solveProblem(SimpleXMLElement $osil){
 	$osilfile=tempnam('..\\..\\..\\tmp','OS-');
 	$osrlfile=tempnam('..\\..\\..\\tmp','OS-');
 	$osil->asXML($osilfile);
@@ -222,9 +222,16 @@ function solveOsil(SimpleXMLElement $osil){
 		throw new Exception($message);
 	}
 	$xml=file_get_contents($osrlfile);
+	if($xml==FALSE){
+		return FALSE;
+	}
+	if(strpos($xml,'<generalStatus type="error">')!==FALSE){
+		throw new Exception("solve: error in OSrL:".$xml);
+	}
 	//unlink($osilfile);
 	//unlink($osrlfile);
 	$xml=preg_replace('/"os.optimizationservices.org"/','"http://os.optimizationservices.org"',$xml);
+	//print_r($xml);
 	$osrl=new SimpleXMLElement($xml);
 	//print_r($osrl->optimization);
 	$result=(string)$osrl->optimization->solution->status->attributes()->type;
@@ -234,8 +241,40 @@ function solveOsil(SimpleXMLElement $osil){
 	return (int)$osrl->optimization->solution->objectives->values->obj;
 }	
 
-assert(solveOsil($xml)===0);
+assertEquals(0,solveProblem($xml));
 
+// Problem 14: Create a template SimpleXMLElement in order to easily construct problems.
+// Creating a function to generate a template called emptyProblem()
+// be sure to include the instanceHeader->name element (populate it with the date)
+// You can "chain" elements in $xml->addChild('foo')->addChild('bar') 
+// You can find the template in Test/osTest.php
+// Don't include any namespace (xmlns) material, OSSolverService does not care.
+// Debug with print_r($xml)
+// Errors do not produce well formed XML.  Detect this in your solveProblem function.
+// For TDD simply test non zero: assert(emptyProblem()) will be tested in the next problem.
+
+function emptyProblem(){
+	$xml=new SimpleXMLElement('<osil/>');
+	$xml->addChild('instanceHeader')->addChild('name');
+	$data=$xml->addChild('instanceData');
+	$data->addChild('objectives')->addChild('obj')->addAttribute('numberOfObjCoef',0);
+	$data->addChild('constraints')->addAttribute('numberOfConstraints',0);
+	$constraints=$data->addChild('linearConstraintCoefficients');
+	$constraints->addAttribute('numberOfValues',0);
+	$constraints->addChild('start')->addChild('el');
+	$constraints->addChild('colIdx');
+	$constraints->addChild('value');
+	//print_r($xml);
+	return $xml;
+}
+
+assert(emptyProblem());
+
+// Problem 15: Solve the homework problem by passing a SimpleXMLElement to solveOsil().
+// Start with emptyProblem()
+// test against your minimal problem
+
+// Problem 16: Generalize and implement as a class.
 
 echo "done.\n"
 
