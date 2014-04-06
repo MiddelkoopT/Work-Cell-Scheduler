@@ -188,16 +188,54 @@ solve();
 
 function solution(){
 	solve();
-	$osil=simplexml_load_file('solution.xml');
+	$osrl=simplexml_load_file('solution.xml');
 	//print_r($osil->optimization);
-	$result=(string)$osil->optimization->solution->status->attributes()->type;
+	$result=(string)$osrl->optimization->solution->status->attributes()->type;
 	if($result!=='optimal'){
 		return FALSE;
 	}
-	return (int)(string)$osil->optimization->solution->objectives->values->obj;
+	return (int)$osrl->optimization->solution->objectives->values->obj;
 }
 
-assert(solution()===0);
+//assert(solution()===0);
+
+// A bit troublesome since it generates warnings
+// Not all that useful as well.
+
+// Problem 13: Refactor solve and solution and fix warnings. Call it solveOsil()
+// This generates a warning, the XML emitted is non-conforming, fix.
+// The xmlns needs a proper "uri" so we add http:// to the xmlns string.
+// New function takes an SimpleXMLElement and returns the solution.
+// Write the file to a temporary file using tempnam() in ..\\..\\..\\tmp
+// get a file into a string with get_file_contents
+// use preg_replace to alter the file.
+// remove the files with unlink() when done.
+
+function solveOsil(SimpleXMLElement $osil){
+	$osilfile=tempnam('..\\..\\..\\tmp','OS-');
+	$osrlfile=tempnam('..\\..\\..\\tmp','OS-');
+	$osil->asXML($osilfile);
+	exec("..\\..\\..\\bin\\OSSolverService.exe -osil $osilfile -osrl $osrlfile",$output,$result);
+	//print_r($output);
+	if($result!==0){
+		$message="solve: error $result\n".implode("\n",$output);
+		throw new Exception($message);
+	}
+	$xml=file_get_contents($osrlfile);
+	//unlink($osilfile);
+	//unlink($osrlfile);
+	$xml=preg_replace('/"os.optimizationservices.org"/','"http://os.optimizationservices.org"',$xml);
+	$osrl=new SimpleXMLElement($xml);
+	//print_r($osrl->optimization);
+	$result=(string)$osrl->optimization->solution->status->attributes()->type;
+	if($result!=='optimal'){
+		return FALSE;
+	}
+	return (int)$osrl->optimization->solution->objectives->values->obj;
+}	
+
+assert(solveOsil($xml)===0);
+
 
 echo "done.\n"
 
