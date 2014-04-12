@@ -5,8 +5,10 @@ namespace WebIS;
 class OS {
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
 	static $tmp="\\WebIS\\tmp\\"; // trailing slash required.
+
 	private $osil=NULL;
 	private $osrl=NULL;
+	private $var=array(); // Reverse IDX mapping ($idx->$name).
 	
 	function __construct($maxOrMin='min') {
 		$osil=new \SimpleXMLElement('<osil/>');
@@ -24,6 +26,13 @@ class OS {
 		$this->osil=$osil;
 	}
 	
+	function getName(){
+		if(is_null($this->osrl)){
+			return FALSE;
+		}
+		return (string)$this->osrl->general->instanceName;
+	}
+	
 	function solve(){
 		$osilfile=tempnam(OS::$solver,'OS-');
 		$osrlfile=tempnam(OS::$solver,'OS-');
@@ -39,7 +48,7 @@ class OS {
 			return FALSE;
 		}
 		if(strpos($xml,'<generalStatus type="error">')!==FALSE){
-			throw new \Exception("solve: error in OSrL:".$xml);
+			throw new \Exception("solve: error in OSrL($osilfile,$osrlfile):".$xml);
 		}
 		unlink($osilfile);
 		unlink($osrlfile);
