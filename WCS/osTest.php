@@ -20,6 +20,10 @@ class OsTestCase extends WebIS\Validator {
 		$os=New WebIS\OS;
 		$this->assertEquals(0.0,$os->solve(),"Solve empty problem");
 		$this->assertContains(date('Y-m-d'),$os->getName(),"Solved today");
+		$os->addVariable('x1');
+		$this->assertEquals(0.0,$os->solve(),"Solve problem with only one variable");
+		$this->assertEquals(0.0,$os->getVariable('x1'));
+		
 	}
 }
 
