@@ -53,6 +53,26 @@ class OS {
 		}
 		return $this->value[$name];
 	}
+
+	function addObjCoef($name,$value){
+		$idx=$this->var[$name]; // find $idx from variable $name
+		$obj=$this->osil->instanceData->objectives->obj;
+		$coef=$obj->addChild('coef',$value);
+		$coef['idx']=$idx;
+		$obj['numberOfObjCoef']=$obj->coef->count();
+	}
+
+	function addConstraint($ub=null,$lb=null){
+		$constraints=$this->osil->instanceData->constraints;
+		$con=$constraints->addChild('con');
+		if(isset($lb)){
+			$con['lb']=$lb;
+		}
+		if(isset($ub)){
+			$con['ub']=$ub;
+		}
+		$constraints['numberOfConstraints']=$constraints->con->count();
+	}
 	
 	function solve(){
 		$osilfile=tempnam(OS::$solver,'OS-');
@@ -96,6 +116,7 @@ class OS {
 
 		return (double)$this->osrl->optimization->solution->objectives->values->obj;
 	}
+		
 }
 
 ?>
