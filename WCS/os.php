@@ -1,5 +1,5 @@
 <?php
-// Optimization Services Copyright 2014 by WebIS Spring 2014 License Apache 2.0
+// Optimization Services Copyright 2014 by Timothy Middelkoop Spring 2014 License Apache 2.0
 namespace WebIS;
 
 class OS {
@@ -11,6 +11,8 @@ class OS {
 	private $osrl=NULL;
 	private $var=array(); // Reverse IDX mapping ($idx->$name).
 	private $value=NULL;  // Solution value.
+
+	private $linear=FALSE;
 	
 	function __construct($maxOrMin='min') {
 		$osil=new \SimpleXMLElement('<osil/>');
@@ -20,13 +22,17 @@ class OS {
 		$data->addChild('objectives')->addChild('obj')->addAttribute('numberOfObjCoef',0);
 		$data->objectives->obj['maxOrMin']=$maxOrMin;
 		$data->addChild('constraints')->addAttribute('numberOfConstraints',0);
-		//$constraints=$data->addChild('linearConstraintCoefficients');
-		//$constraints->addAttribute('numberOfValues',0);
-		//$constraints->addChild('start')->addChild('el');
-		//$constraints->addChild('colIdx');
-		//$constraints->addChild('value');
 		//print_r($osil);
 		$this->osil=$osil;
+	}
+	
+	function addLinearConstraints() {
+		$constraints=$this->osil->instanceData->addChild('linearConstraintCoefficients');
+		$constraints->addAttribute('numberOfValues',0);
+		$constraints->addChild('start')->addChild('el',0);
+		$constraints->addChild('colIdx');
+		$constraints->addChild('value');
+		$this->linear=TRUE;
 	}
 	
 	function getName(){
@@ -72,11 +78,34 @@ class OS {
 			$con['ub']=$ub;
 		}
 		$constraints['numberOfConstraints']=$constraints->con->count();
+
+		// Setup linear constraints, move if to support other constraints.
+		if(!$this->linear){
+			$this->addLinearConstraints();
+		}
+		
+		$lcc=$this->osil->instanceData->linearConstraintCoefficients;
+		$lcc->start->el[]=$lcc->value->el->count();
+	}
+	
+	function addConstraintCoef($name,$value){
+		$lcc=$this->osil->instanceData->linearConstraintCoefficients;
+		$lcc->colIdx->addChild('el',$this->var[$name]);
+		$lcc->value->addChild('el',$value);
+		// Update count and start
+		$count=$lcc->value->el->count();
+		$lcc['numberOfValues']=$count;
+		// Update the last start element to match value index.
+ 		$lcc->start->el[$lcc->start->el->count()-1]=$count;
 	}
 	
 	function solve(){
 		$osilfile=tempnam(OS::$solver,'OS-');
 		$osrlfile=tempnam(OS::$solver,'OS-');
+		if(self::$DEBUG){
+			$osilfile='osil.xml';
+			$osrlfile='osrl.xml';
+		}
 		$this->osil->asXML($osilfile);
 		exec(OS::$solver." -osil $osilfile -osrl $osrlfile",$output,$result);
 		//print_r($output);
@@ -90,15 +119,16 @@ class OS {
 			return FALSE;
 		}
 		if(strpos($xml,'<generalStatus type="error">')!==FALSE){
-			throw new \Exception("solve: error in OSrL($osilfile,$osrlfile):".$xml);
+			throw new \Exception("solve: error in OSrL($osilfile,$osrlfile):\n".$xml);
 		}
-		unlink($osilfile);
-		unlink($osrlfile);
-
+		if(!self::$DEBUG){
+			unlink($osilfile);
+			unlink($osrlfile);
+		}
+		// Fix for strict parcer used by PHP.
 		$xml=preg_replace('/"os.optimizationservices.org"/','"http://os.optimizationservices.org"',$xml);
 		//print_r($xml);
 		$this->osrl=new \SimpleXMLElement($xml);
-		//print_r($this->osrl->optimization);
 		$result=(string)$this->osrl->optimization->solution->status->attributes()->type;
 		if($result!=='optimal'){
 			return FALSE;
@@ -116,7 +146,11 @@ class OS {
 
 		return (double)$this->osrl->optimization->solution->objectives->values->obj;
 	}
-		
+	
+	function getSolution(){
+		return (double)$solution->objectives->values->obj;
+	}
+	
 }
 
 ?>

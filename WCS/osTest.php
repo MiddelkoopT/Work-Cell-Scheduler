@@ -26,10 +26,16 @@ class OsTestCase extends WebIS\Validator {
 		$os->addObjCoef('x1', '-1');
 		$this->assertEquals(0.0,$os->solve());
 		$os->addVariable('x2');
-		$os->addObjCoef('x1', '-2');
+		$os->addObjCoef('x2', '-2');
 		$os->addConstraint($ub=40);
+		$os->addConstraintCoef('x1',1);
+		$os->addConstraintCoef('x2',1);
 		$os->addConstraint($ub=60);
-		$this->assertEquals(0.0,$os->solve());
+		$os->addConstraintCoef('x1',2);
+		$os->addConstraintCoef('x2',1);
+		$this->assertEquals(-80.0,$os->solve());
+		$this->assertEquals(0,$os->getVariable('x1'));
+		$this->assertEquals(40,$os->getVariable('x2'));
 	}
 }
 
