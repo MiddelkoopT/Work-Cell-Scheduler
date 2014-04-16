@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<osil><instanceHeader/>
+  <instanceData>
+		<variables numberOfVariables="2">
+		     <var name="x"/>
+		     <var name="y"/>
+	    </variables>
+        <objectives>
+		     <obj maxOrMin="min" numberOfObjCoef="2">
+		         <coef idx="0">-1</coef>
+		         <coef idx="1">-2</coef>
+		     </obj>
+		</objectives>
+		<constraints numberOfConstraints="2">
+		     <con ub="40"/>
+		     <con ub="60"/>
+		</constraints>
+		<linearConstraintCoefficients numberOfValues="4">
+		     <start>
+		        <el>0</el>
+		        <el>2</el>
+		        <el>4</el>
+		     </start>
+		     <colIdx>
+		         <el>0</el><el>1</el>
+		         <el>0</el><el>1</el>
+		     </colIdx>
+		     <value>
+		         <el>1</el><el>1</el>
+		         <el>2</el><el>1</el>
+		     </value>
+		</linearConstraintCoefficients>
+	</instanceData>
+</osil>

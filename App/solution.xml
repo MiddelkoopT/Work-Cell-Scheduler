@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="http://www.coin-or.org/OS/stylesheets/OSrL.xslt"?>
+<osrl xmlns="os.optimizationservices.org"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="os.optimizationservices.org http://www.optimizationservices.org/schemas/2.0/OSrL.xsd" >
+<general>
+<generalStatus type="error">
+</generalStatus>
+<message>PARSER ERROR:  Input is either not valid or well formed: improperly formed <instanceData> element
+Here are 20 characters currently being pointed to in the input string: /osil>
+
+See line number: 1
+</message>
+</general>
+</osrl>
