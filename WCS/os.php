@@ -59,6 +59,10 @@ class OS {
 		}
 		return $this->value[$name];
 	}
+	
+	function getOsil(){
+		return $this->osil->asXML();
+	}
 
 	function addObjCoef($name,$value){
 		$idx=$this->var[$name]; // find $idx from variable $name
@@ -71,10 +75,10 @@ class OS {
 	function addConstraint($ub=null,$lb=null){
 		$constraints=$this->osil->instanceData->constraints;
 		$con=$constraints->addChild('con');
-		if(isset($lb)){
+		if(!is_null($lb)){
 			$con['lb']=$lb;
 		}
-		if(isset($ub)){
+		if(!is_null($ub)){
 			$con['ub']=$ub;
 		}
 		$constraints['numberOfConstraints']=$constraints->con->count();
@@ -100,8 +104,8 @@ class OS {
 	}
 	
 	function solve(){
-		$osilfile=tempnam(OS::$solver,'OS-');
-		$osrlfile=tempnam(OS::$solver,'OS-');
+		$osilfile=tempnam(OS::$tmp,'OS-');
+		$osrlfile=tempnam(OS::$tmp,'OS-');
 		if(self::$DEBUG){
 			$osilfile='osil.xml';
 			$osrlfile='osrl.xml';
@@ -125,7 +129,7 @@ class OS {
 			unlink($osilfile);
 			unlink($osrlfile);
 		}
-		// Fix for strict parcer used by PHP.
+		// Fix for strict parser used by PHP.
 		$xml=preg_replace('/"os.optimizationservices.org"/','"http://os.optimizationservices.org"',$xml);
 		//print_r($xml);
 		$this->osrl=new \SimpleXMLElement($xml);
