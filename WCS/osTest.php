@@ -18,6 +18,24 @@ class OsTestCase extends WebIS\Validator {
 
 	function testSolver(){
 		$os=New WebIS\OS;
+		$this->assertEquals(0.0,$os->solve(),"Solve empty problem");
+		$this->assertContains(date('Y-m-d'),$os->getName(),"Solved today");
+		$os->addVariable('x1');
+		$this->assertEquals(0.0,$os->solve(),"Solve problem with only one variable");
+		$this->assertEquals(0.0,$os->getVariable('x1'),"x1 is zero");
+		$os->addObjCoef('x1', '-1');
+		$this->assertEquals(0.0,$os->solve());
+		$os->addVariable('x2');
+		$os->addObjCoef('x2', '-2');
+		$os->addConstraint($ub=40);
+		$os->addConstraintCoef('x1',1);
+		$os->addConstraintCoef('x2',1);
+		$os->addConstraint($ub=60);
+		$os->addConstraintCoef('x1',2);
+		$os->addConstraintCoef('x2',1);
+		$this->assertEquals(-80.0,$os->solve());
+		$this->assertEquals(0,$os->getVariable('x1'));
+		$this->assertEquals(40,$os->getVariable('x2'));
 	}
 }
 
