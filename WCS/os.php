@@ -6,13 +6,14 @@ class OS {
 	static $DEBUG=FALSE;
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
 	static $tmp="\\WebIS\\tmp\\"; // trailing slash required.
-
+	private $linear=FALSE;
+	
 	private $osil=NULL;
 	private $osrl=NULL;
 	private $var=array(); // Reverse IDX mapping ($idx->$name).
 	private $value=NULL;  // Solution value.
+	private $solution=NULL;
 
-	private $linear=FALSE;
 	
 	function __construct($maxOrMin='min') {
 		$osil=new \SimpleXMLElement('<osil/>');
@@ -42,7 +43,7 @@ class OS {
 		return (string)$this->osrl->general->instanceName;
 	}
 	
-	function addVariable($name,$type=null){
+	function addVariable($name,$type=NULL){
 		$variables=$this->osil->instanceData->variables; // shortcut
 		$this->var[$name]=$variables->var->count(); // $name to $idx (zero based -- preinsert)
 		$var=$variables->addChild('var');
@@ -72,7 +73,7 @@ class OS {
 		$obj['numberOfObjCoef']=$obj->coef->count();
 	}
 
-	function addConstraint($ub=null,$lb=null){
+	function addConstraint($lb,$ub){
 		$constraints=$this->osil->instanceData->constraints;
 		$con=$constraints->addChild('con');
 		if(!is_null($lb)){
@@ -135,7 +136,8 @@ class OS {
 		$this->osrl=new \SimpleXMLElement($xml);
 		$result=(string)$this->osrl->optimization->solution->status->attributes()->type;
 		if($result!=='optimal'){
-			return FALSE;
+			$this->solution=NULL;
+			return $result;
 		}
 
 		// save values to array
@@ -148,11 +150,12 @@ class OS {
 			if(self::$DEBUG) print (float)$var."\n";
 		}
 
-		return (double)$this->osrl->optimization->solution->objectives->values->obj;
+		$this->solution=(double)$this->osrl->optimization->solution->objectives->values->obj;
+		return TRUE;
 	}
 	
 	function getSolution(){
-		return (double)$solution->objectives->values->obj;
+		return $this->solution;
 	}
 	
 }
