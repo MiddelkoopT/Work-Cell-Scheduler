@@ -226,7 +226,9 @@ echo "<tr><th>Total</th>";
 foreach($celltotal as $ct){
 	echo "<td>$ct</td>";
 }
-echo "</tr></table>";
+echo "</tr>";
+
+echo "\n</table>";
 
 
 // Done
