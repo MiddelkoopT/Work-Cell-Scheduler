@@ -10,7 +10,7 @@ function assertEquals($expected,$result) {
 
 function assertNotEquals($expected,$result) {
 	if(($expected===$result)){
-		$message="assertNoeEquals: |$expected|$result|\n";
+		$message="assertNotEquals: |$expected|$result|\n";
 		throw new Exception($message);
 	}
 }
@@ -33,5 +33,14 @@ function assertContains($needle,$haystack){
 	$message="assertContains: |$needle|$haystack|";
 	throw new Exception($message);
 }
+
+function assertTrue($result){
+	return assertEquals(TRUE,$result);
+}
+
+function assertFalse($result){
+	return assertEquals(FALSE,$result);
+}
+
 
 ?>
