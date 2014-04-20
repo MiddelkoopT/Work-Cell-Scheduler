@@ -54,7 +54,7 @@ while($worker[$w] != 'worker-1'){
 	//print_r($w);
 }
 
-// B1: Create demand using a structure/class that holds (product,cell,hours).
+// B3: Create demand using a structure/class that holds (product,cell,hours).
 // Hours is between 1 and 3 hours: rand(1,3)
 
 class Demand {
@@ -76,7 +76,7 @@ foreach($product as $p){
 assertEquals($products,sizeof($demand));
 //print_r($demand);
 
-// B2: Create training matrix class to hold worker/cell productivity
+// B4: Create training matrix class to hold worker/cell productivity
 //    If a worker/cell does not exist return a default value (which could be FALSE).
 //    access with set(worker,cell,productivity) and get(...)
 //    Use an array with the key as a string, join elements with the underscore symbol ('_')
@@ -98,13 +98,13 @@ class Training {
 
 $training=new Training;
 
-// B2.1 Use TDD to check get/set
+// B5: Use TDD to check get/set
 
 assertEquals(FALSE,$training->get('worker-1','cell-1'));
 $training->set('worker-1','cell-1',0.99);
 assertEquals(0.99,$training->get('worker-1','cell-1'));
 
-// B3: Populate training with a number of random trainings
+// B6: Populate training with a number of random trainings
 
 for($i=0;$i<20;$i++){
 	$training->set($worker[array_rand($worker)],$cell[array_rand($cell)],rand(70,100)/100.0);
