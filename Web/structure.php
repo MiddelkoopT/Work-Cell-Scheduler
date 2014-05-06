@@ -185,6 +185,8 @@ $OF->solve();
 //print_r($OF);
 //print_r($OF->solve());-
 //echo "\n";
+
+
 echo "minimum hour: ";
 print_r($OF->getSolution());
 echo "\n";
