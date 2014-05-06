@@ -32,20 +32,20 @@ abstract class Validator extends \PHPUnit_Framework_TestCase {
 	 * @param string $message to display on failure
 	 * @return string the entire doc for additional processing
 	 */
-	public function assertValidHTML($file,$contains='</html>',$variables=array(),$message=''){
+	public function assertValidHTML($page,$contains='</html>',$variables=array(),$message=''){
 		# parent declared variables
 		$web=self::$web;
 		$tidy=self::$tidy;
 		$tidyoptions=self::$tidyoptions;
 		
 		## Get document
-		$url="$web/$this->project/$file";
+		$url="$web/$this->project/$page";
 		$request=new \HTTP_Request2($url, \HTTP_Request2::METHOD_GET);
 		$request->getURL()->setQueryVariables($variables);
 		$doc=$request->send()->getBody();
 
 		## Verify server is running and content exists fist
-		$this->assertContains($contains,$doc,$url,$message);
+		$this->assertContains($contains,$doc,"\n$url\n$message");
 		
 		## Call validator
 
