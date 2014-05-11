@@ -11,11 +11,11 @@ class OS {
 	private $osil=NULL;
 	private $osrl=NULL;
 	private $var=array(); // Reverse IDX mapping ($idx->$name).
-	private $value=NULL;  // Solution value.
-	private $solution=NULL;
+	public $value=NULL;  // Solution value.
+	public $solution=NULL;
 
 	
-	function __construct($maxOrMin='min') {
+	function __construct($maxOrMin='max') {
 		$osil=new \SimpleXMLElement('<osil/>');
 		$osil->addChild('instanceHeader')->addChild('name',php_uname('n').' '.date('c'));
 		$data=$osil->addChild('instanceData');
