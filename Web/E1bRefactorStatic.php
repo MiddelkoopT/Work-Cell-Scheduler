@@ -7,8 +7,6 @@
 
 //refactoring of the static problem
 
-
-
 function solveExamProblem($staticSuppliers,$staticDepartments,$demand,$profit,$capacity,$distance){
 
 	include_once 'tdd.php';

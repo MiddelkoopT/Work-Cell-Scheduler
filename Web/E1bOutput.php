@@ -6,7 +6,6 @@
 (d) 
 
 display the input and output in html using tables 
-
 This only diplays the input and output from the random problem 
 
 -->

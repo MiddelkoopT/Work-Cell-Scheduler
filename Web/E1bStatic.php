@@ -6,8 +6,6 @@
 include_once 'tdd.php';
 include_once 'Work-Cell-Scheduler/WCS/os.php';
 
-
-
 $numSuppliers = 3;
 $numDepartments = 3;
 $combos = $numSuppliers * $numDepartments;

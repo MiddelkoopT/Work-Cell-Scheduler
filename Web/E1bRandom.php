@@ -42,12 +42,10 @@ class Department{ 		//department class gives demand and profit attributes to eac
 		$this->profit=$p;
 	}
 }
-
 for ($i=0; $i<$numDepartments;$i++){
 	$cd=$departments[$i]; //cd = current department
 	$departmentDem["$departments[$i]"]=new Department(rand(0,1000),rand(10,50));
 }
-
 class Supplier{
 	public $supplier;
 	public $capacity;
@@ -57,7 +55,6 @@ class Supplier{
 		$this->capacity=$c;
 	}
 }
-
 for ($x=0; $x<$numSuppliers;$x++){
 	$cs=$suppliers[$x]; //cs = current supplier
 	$supplierCap["$suppliers[$x]"] = new Supplier($cs,rand(400,2000));

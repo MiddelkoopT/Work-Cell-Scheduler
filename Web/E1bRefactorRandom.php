@@ -7,7 +7,6 @@
 include_once 'tdd.php';
 include_once 'Work-Cell-Scheduler/WCS/os.php';
 
-
 //solveRandomProblem(5,7);
 
 function solveRandomProblem($passSuppliers,$passDepartments){ // Refactoring of random problem 

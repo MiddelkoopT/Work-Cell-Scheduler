@@ -8,7 +8,6 @@
 
 include_once 'E1bRefactorStatic.php';
 
-
 // first you must set your values that will be passed by the function 
 
 $suppliers = 4;
