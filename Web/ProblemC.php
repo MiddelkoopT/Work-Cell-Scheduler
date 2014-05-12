@@ -51,7 +51,7 @@ Class Problemdata{
 // build the distance array
 
 	function loadCost(){
-		 
+
 		$distance=array();
 		foreach ($this->supplier as $S){
 			foreach ($this->department as $D){
