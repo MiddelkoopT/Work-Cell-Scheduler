@@ -5,17 +5,17 @@ namespace WebIS;
 class OS {
 	static $DEBUG=FALSE;
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
-	static $tmp="\\WebIS\\tmp\\"; // trailing slash required.
+	static $temp="\\WebIS\\tmp\\"; // trailing slash required.
 	private $linear=FALSE;
 	
-	private $osil=NULL;
-	private $osrl=NULL;
-	private $var=array(); // Reverse IDX mapping ($idx->$name).
-	private $value=NULL;  // Solution value.
-	private $solution=NULL;
+	public $osil=NULL;
+	public $osrl=NULL;
+	public $var=array(); // Reverse IDX mapping ($idx->$name).
+	public $value=NULL;  // Solution value.
+	public $solution=NULL;
 
 	
-	function __construct($maxOrMin='min') {
+	function __construct($maxOrMin='max') {
 		$osil=new \SimpleXMLElement('<osil/>');
 		$osil->addChild('instanceHeader')->addChild('name',php_uname('n').' '.date('c'));
 		$data=$osil->addChild('instanceData');
@@ -105,8 +105,8 @@ class OS {
 	}
 	
 	function solve(){
-		$osilfile=tempnam(OS::$tmp,'OS-');
-		$osrlfile=tempnam(OS::$tmp,'OS-');
+		$osilfile=tempnam(OS::$temp,'OS-');
+		$osrlfile=tempnam(OS::$temp,'OS-');
 		if(self::$DEBUG){
 			$osilfile='osil.xml';
 			$osrlfile='osrl.xml';

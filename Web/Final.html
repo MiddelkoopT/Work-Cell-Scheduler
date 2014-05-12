@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Decision Support Systems - IMSE 4420 Final</title>
+</head>
+<body>
+	<h1>Sean McLerran - scmmv4</h1>
+	<h2>Supply Data</h2>
+	<table border='1'>
+		<tr>
+			<td>Supplier</td>
+			<?php 
+foreach ($supplier as $s){
+	echo"<td>$s</td>";
+	}
+echo"<tr><td>Supply</td>";
+foreach($supplyVar as $s){
+	echo"<td>$s</td>";
+	}
+echo"</tr>";
+?>
+		</tr>
+	</table>
+	<h2>Demand Data</h2>
+	<table border='1'>
+		<tr>
+			<td>Department</td>
+			<?php 
+foreach ($department as $d){
+	echo"<td>$d</td>";
+	}
+echo"<tr><td>Demand</td>";
+foreach($demandVar as $d){
+	echo"<td>$d</td>";
+	}
+echo"<tr>";
+?>
+		</tr>
+	</table>
+	<h2>Profit Data</h2>
+	<table border='1'>
+		<tr>
+			<td>Department</td>
+			<?php 
+foreach ($departments as $d){
+	echo"<td>$d</td>";
+	}
+echo"<tr><td>Profit</td>";
+foreach($dProfit as $p){
+	echo"<td>$p</td>";
+	}
+echo"<tr>";
+?>
+		</tr>
+	</table>
+
+	<h2>Shipping Data</h2>
+	<table border='1'>
+		<tr>
+			<td>Supplier to Department</td>
+			<?php 
+foreach ($decVar as $d){
+	echo"<td>$d</td>";
+	}
+echo"<tr><td>Real Profit</td>";
+foreach($realProfit as $p){
+	echo"<td>$p</td>";
+	}
+echo"</tr>";
+?>
+		</tr>
+	</table>
+
+</body>
+</html>
