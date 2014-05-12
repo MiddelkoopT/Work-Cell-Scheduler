@@ -72,6 +72,8 @@ foreach ( $realProfit as $key => $value ) {
 	$os->addVariable ( $key );
 	$os->addObjCoef ( $key, $value );
 }
+
+$os -> solve();
 print_r($os);
 
 
