@@ -100,6 +100,7 @@ foreach($suppliers as $s){
 
 //adding the constraints
 
+
 $x=0;
 foreach($supplierCap as $s ){
 	$x+=1;

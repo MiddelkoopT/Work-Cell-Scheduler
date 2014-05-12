@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <!-- Joe Ahlbrandt Exam 1 Part B 
 
 (d) 
