@@ -1,7 +1,7 @@
 <?php
 // Optimization Services Copyright 2014 by Timothy Middelkoop Spring 2014 License Apache 2.0
 namespace WebIS;
-///
+////
 class OS {
 	static $DEBUG=FALSE;
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
