@@ -7,9 +7,14 @@ require_once 'Work-Cell-Scheduler/WCS/os.php';
 
 //------------------------------------------------------------------------------
 //Number of Stores and Suppliers
-$numDepartments=3;
-$numSuppliers=3;
+$numDepartments=5;
+$numSuppliers=4;
 $numCostIndexes=$numDepartments*$numSuppliers;
+
+$sumOne=0;
+$sumTwo=0;
+$sumThree=0;
+$sumFour=0;
 
 $departments=array();
 $suppliers=array();
@@ -20,24 +25,26 @@ for($i=0;$i<($numDepartments);$i++){
 for($i=0;$i<($numSuppliers);$i++){
 	$suppliers[]="S-$i";
 }
-//print_r($departments);
-//print_r($suppliers);
+print_r($departments);
+print_r($suppliers);
 
 //Supply and Demand Arrays
-$capacity=array(600,300,200);
-$demand=array(600,200,300);
-$profitDisplay=array(20,30,40);
-$profit=array(20,30,40,20,30,40,20,30,40);
-$cost=array(2,3,3,5,2,4,3,3,8);
+$capacity=array(600,300,200,500);
+$demand=array(600,200,300,100,300);
+$profitDisplay=array(20,30,40,25,25);
+$profit=array(20,30,40,25,25,20,30,40,25,25,20,30,40,25,25,20,30,40,25,25);
+$cost=array(2,3,3,3,3,5,2,4,4,2,3,2,2,2,2,3,2,4,2,2);
 $actualProfit=array();
+$productionCost=array(10,14,40,11,10,14,40,11,10,14,40,11,10,14,40,11,10,14,40,11);
+$supplyMin=array(100,100,100,100);
 
 //Create Actual Profit Array
 foreach ($cost as $key => $value) {
-	$actualProfit[$key] = $profit[$key] - $cost[$key];
+	$actualProfit[$key] = $profit[$key] - $cost[$key]-$productionCost[$key];
 }
 echo"\n";
-//echo "ActualProfit";
-//print_r($actualProfit);
+echo "ActualProfit";
+print_r($actualProfit);
 
 $actualProfit1=array();
 foreach($suppliers as $key=>$s){
@@ -45,15 +52,15 @@ foreach($suppliers as $key=>$s){
 		$actualProfit1["{$s}_{$d}"] = $actualProfit[$key];
 	}
 }
-//print_r($actualProfit1);
+print_r($actualProfit1);
 
 //Create Indexed Array for Supply Capacity
 $supplyVal=array();
 for($i=0;$i<($numSuppliers);$i++){
 	$supplyVal["S-$i"]=$capacity[$i];
 }
-//echo "SupplyVal";
-//print_r($supplyVal);
+echo "SupplyVal";
+print_r($supplyVal);
 
 //Created Indexed Array for Store Demand
 $demandVal=array();
@@ -70,7 +77,7 @@ foreach($suppliers as $s){
 		$dvariable[]="{$s}_{$d}";
 	}
 }
-//print_r($dvariable);
+print_r($dvariable);
 
 //--------------------------------------------------------------------------
 //Create OSIL file
@@ -81,7 +88,7 @@ foreach($dvariable as $dv){
 	$v=$os->addVariable("$dv");
 	$os->addObjCoef("$dv", $actualProfit1[$dv]);
 }
-
+print_r($dvariable);
 //Create Demand Constraints
 foreach($departments as $d){
 	$os->addConstraint(NULL,$demandVal[$d]);
@@ -99,9 +106,25 @@ foreach($suppliers as $s){
 	}
 }
 //print_r($os);
-
+//Create minimum 100 constraint
+foreach($suppliers as $s){
+	$os->addConstraint(NULL,$supplyMin[$s]);
+	foreach($departments as $d){
+		$os->addConstraintCoef("{$s}_{$d}",1);
+	}
+}
 ?>
 
+<?php
+	$sumOne=$os->getVariable("S-0_D-0");
+	$sumOne=$sumOne+$os->getVariable("S-0_D-1");
+	$sumOne=$sumOne+ $os->getVariable("S-0_D-1");
+
+echo"Print SumOne";
+echo $sumOne;
+
+
+?>
 <?php
 //Create HTML File
 //---------------------------------------------------------------
@@ -205,8 +228,22 @@ echo "\n";
 }
 }
 ?>
+
 </table>
 <br>
+<h2>Revenues</h2>
+<table border='1'>
+<tr><th>Supplier</th>
+<?php 
+foreach($suppliers as $s){
+	echo "<td>$s </td>";
+		}
+?>
+
+<tr><td>Revenues </td>
+
+</table>
+
 <a href="127.0.0.1:8000/Work-Cell-Scheduler/Web/">Back to Index Page</a> 
 </body>
 </html>
