@@ -14,16 +14,16 @@ for($i=1;$i<=$departmentNum;$i++){
 	$department[]="department-$i";
 
 }
-echo "department:\n";
-print_r($department);
+//echo "department:\n";
+//print_r($department);
 
 for($i=1;$i<=$supplierNum;$i++){
 
 	$supplier[]="supplier-$i";
 
 }
-echo "supplier:\n";
-print_r($supplier);
+//echo "supplier:\n";
+//print_r($supplier);
 
 //constrains
 $capacity = array();
@@ -31,8 +31,8 @@ $capacity["supplier-1"] = 600;
 $capacity["supplier-2"] = 300;
 $capacity["supplier-3"] = 200;
 $capacity["supplier-4"] = 500;
-echo "capacity:\n";
-print_r($capacity);
+//echo "capacity:\n";
+//print_r($capacity);
 
 $demand = array();
 $demand["department-1"] = 600;
@@ -40,8 +40,8 @@ $demand["department-2"] = 200;
 $demand["department-3"] = 300;
 $demand["department-4"] = 100;
 $demand["department-5"] = 300;
-echo "demand:\n";
-print_r($demand);
+//echo "demand:\n";
+//print_r($demand);
 
 //
 
@@ -51,8 +51,8 @@ $profit["department-2"] = 30;
 $profit["department-3"] = 40;
 $profit["department-4"] = 25;
 $profit["department-5"] = 25;
-echo "profit:\n";
-print_r($profit);
+//echo "profit:\n";
+//print_r($profit);
 
 $productionCost = array();
 $productionCost["supplier-1"] = 10;
@@ -82,8 +82,8 @@ $distance["supplier-4_department-3"] = 4;
 $distance["supplier-4_department-4"] = 2;
 $distance["supplier-4_department-5"] = 2;
 
-echo "distance:\n";
-print_r($distance);
+//echo "distance:\n";
+//print_r($distance);
 
 // profit - distance (cost)
 $paralist=array();
@@ -93,7 +93,7 @@ foreach ($department as $D){
 		
 	}
 }
-print_r($paralist);
+//print_r($paralist);
 
 // build the objective function
 $OF = new WebIS\OS;
@@ -133,6 +133,10 @@ foreach ($supplier as $S){
 // solve problem
 
 $OF->solve();
+echo "<h3>Jianghong Li</h3>";
+echo "<h3>14149339</h3>";
+echo "<h3>Pawprint: jlrzf</h3>";
+echo "solution is :";
 print_r($OF->getSolution());
 
 
@@ -148,8 +152,8 @@ foreach ($supplier as $S){
 	}
 }
 
-echo "supplierCost";
-print_r($supplierCost);
+//echo "supplierCost";
+//print_r($supplierCost);
 
 $departProfit=array();
 
@@ -163,13 +167,14 @@ foreach ($supplier as $S){
 	}
 }
 
-echo "departProfit";
-print_r($departProfit);
+//echo "departProfit";
+//print_r($departProfit);
 
 
 
 //display
 //$tmp = 0;
+
 echo "<table border='1'><tr><td>\n";
 foreach($supplier as $S){
 	echo "<th>$S</th>";
@@ -186,13 +191,24 @@ echo "<tr>\n";
 echo "\n</table>";
 echo "<br/>";
 
+echo "supplier cost:";
 echo "<table border='1'>\n";
 foreach($supplier as $S){
-	echo "<th>$S</th>";
-	echo "<td>$supplierCost[$S]</td>";
+	echo "<tr><th>$S</th>";
+	echo "<td>$supplierCost[$S]</td></tr>";
 }
 echo "\n</table>";
 echo "<br/>";
+
+echo "department profit:";
+echo "<table border='1'>\n";
+foreach($department as $D){
+	echo "<tr><th>$D</th>";
+	echo "<td>$departProfit[$D]</td></tr>";
+}
+echo "\n</table>";
+echo "<br/>";
+
 
 echo "\n</body></html>\n";
 
