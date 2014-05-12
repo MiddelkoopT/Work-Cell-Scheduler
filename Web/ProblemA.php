@@ -1,6 +1,6 @@
 <?php
 require 'Work-Cell-Scheduler/WCS/os.php';
-////
+/////
 //build the array
 $department= array();
 $supplier=array();
