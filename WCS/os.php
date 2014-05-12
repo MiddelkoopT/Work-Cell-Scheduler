@@ -7,14 +7,14 @@ class OS {
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
 	static $tmp="\\WebIS\\tmp\\"; // trailing slash required.
 
-	private $osil=NULL;
-	private $osrl=NULL;
-	private $var=array(); // Reverse IDX mapping ($idx->$name).
-	private $value=NULL;  // Solution value.
+	public $osil=NULL;
+	public $osrl=NULL;
+	public $var=array(); // Reverse IDX mapping ($idx->$name).
+	public $value=NULL;  // Solution value.
 
-	private $linear=FALSE;
+	public $linear=FALSE;
 	
-	function __construct($maxOrMin='min') {
+	function __construct($maxOrMin='max') {
 		$osil=new \SimpleXMLElement('<osil/>');
 		$osil->addChild('instanceHeader')->addChild('name',php_uname('n').' '.date('c'));
 		$data=$osil->addChild('instanceData');
