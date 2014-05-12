@@ -169,14 +169,31 @@ function solveProblem($numSupply,$numDepartments,$capacity,$demand,$profit,$cost
 		}
 	}
 	
-	print_r($plantProdCost);
+
 	$plantProdCost=array();
 	foreach($supply as $s){
 		$plantProdCost[$s]=$prodCost1[$s]*$plantProd[$s];
 	}
 	
-	print_r($plantProdCost);
+	//print_r($plantProdCost);
 	
+	$plantProd1=array();
+	foreach($departments as $d){
+		$plantProd1[$d]=0;
+	}
+	
+	foreach($supply as $s){
+		foreach ($departments as $d){
+			$plantProd1[$d] += $a->getVariable("{$s}_{$d}");
+		}
+	}
+	
+	$profitDepartment=array();
+	foreach($departments as $d){
+		$profitDepartment[$d]=$plantProd1[$d]*$profitList[$d];
+	}
+	
+	//print_r($profitDepartment);
 	
 ?>	
 
@@ -338,6 +355,48 @@ function solveProblem($numSupply,$numDepartments,$capacity,$demand,$profit,$cost
 	
 	</table>
 	
+	<br>
+	<br>
+	<b>Production Cost per Plant</b>
+	<p>
+	<table border='1'>
+	<tr>
+	<?php
+	foreach($supply as $s){
+		echo "<th>$s</b></th>";	
+	}	
+	echo '</tr>';
+	
+	echo '<tr>';
+	foreach($supply as $s){
+		echo "<td>".$plantProdCost[$s]."</td>";
+	}
+	echo '</tr>';
+
+	?>
+	</table>
+	
+	<br>
+	<b>Profit for each Department:</b>
+	<p>
+	<table border='1'>
+	<tr>
+	<?php
+	foreach($departments as $d){
+		echo "<th>$d</b></th>";	
+	}	
+	echo '</tr>';
+	
+	echo '<tr>';
+	foreach($departments as $d){
+		echo "<td>".$profitDepartment[$d]."</td>";
+	}
+	echo '</tr>';
+
+	?>
+	</table>
+	<br>
+	
 	
 	
 	<?php 	
@@ -348,20 +407,16 @@ function solveProblem($numSupply,$numDepartments,$capacity,$demand,$profit,$cost
 	
 }
 
+
+//Solve problem using refactored work
 echo "Name: Jennifer Bergman";
 echo '<br>';
 echo "Pawprint: JJBY95";
 echo '<br>';
 
-echo '<h1>Part A (given problem):</h1>';
+echo '<h1>Part B (Updated Problem):</h1>';
 solveProblem(4, 5, [600,300,200,500],[600,200,300,100,300],[20,30,40,25,25],[2,3,3,3,3,5,2,4,4,2,3,2,8,2,2,3,2,4,2,2],[10,14,40,11]);
 //(s0d0,s0d1,s0d2,s0d3,s0d4,s1d0,s1d1,s1d2,s1d3,s1d4,s2d0,s2d1,s2d2,s2d3,s2d4,s3d0,s3d1,s3d2,s3d3,s3d4)
-
-//echo '<h1>Part B (random problem):</h1>';
-//echo '<br>';
-//solveProblem(rand(1,3), rand(1,3), 0,0,0,0,0);
-
-
 
 
 ?>
