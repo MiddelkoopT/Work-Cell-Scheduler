@@ -6,7 +6,7 @@ require_once 'Work-Cell-Scheduler/WCS/os.php';
 
 //------------------------------------------------------------------------------
 //Create Stores and Suppliers
-$numDepartments=4;
+$numDepartments=5;
 $numSuppliers=5;
 $plantCost=4;
 $numCostIndexes=$numDepartments*$numSuppliers;
@@ -21,8 +21,8 @@ for($i=0;$i<($numSuppliers);$i++){
 for($i=0;$i<($numDepartments);$i++){
 	$departments[]="D-$i";
 }
-//print_r($departments);
-//print_r($suppliers);
+print_r($departments);
+print_r($suppliers);
 
 //Create Supply and Demand Arrays
 $capacity=array(600,300,200,500);
@@ -50,14 +50,13 @@ foreach($suppliers as $key=>$s){
 		}
 	}
 }
-//print_r($aProfit1);
+print_r($aProfit1);
 
 //Create Indexed Array for Supply Capacity
 $supplyVal=array();
 for($i=0;$i<($numSuppliers);$i++){
 	$supplyVal["S-$i"]=$capacity[$i];
 }
-//echo "SupplyVal";
 //print_r($supplyVal);
 
 //Created Indexed Array for Store Demand
@@ -77,7 +76,6 @@ foreach($suppliers as $s){
 }
 //print_r($dvariable);
 
-//--------------------------------------------------------------------------
 //Create OSIL file
 
 $os=new WEBIS\OS;
@@ -125,15 +123,7 @@ foreach($suppliers as $s){
 echo "<th>$s\n";
 }
 ?>
-<?php
-foreach($departments as $d){
-echo "<tr><th>$d</th>";
-foreach($suppliers as $s){
-echo "<td>".$os->getVariable("{$s}_{$d}")."</td>";
-echo "\n";
-}
-}
-?>
+
 
 <h3>Optimized Solution</h3>
 
@@ -157,8 +147,13 @@ echo "<th>$s\n";
 foreach($departments as $d){
 echo "<tr><th>$d</th>";
 foreach($suppliers as $s){
-echo "<td>".$os->getVariable("{$s}_{$d}")."</td>";
+echo "<tr><th>$s</th>";{
+foreach($demand as $c);{
+echo"<tr><th>$c</th>";
+echo "<td>".$os->getVariable("{$s}_{$d}_{$c}")."</td>";
 echo "\n";
+}
+}
 }
 }
 ?>
