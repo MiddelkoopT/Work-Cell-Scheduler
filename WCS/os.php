@@ -6,13 +6,14 @@ class OS {
 	static $DEBUG=FALSE;
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
 	static $tmp="\\WebIS\\tmp\\"; // trailing slash required.
-
+	private $linear=FALSE;
+	
 	private $osil=NULL;
 	private $osrl=NULL;
 	private $var=array(); // Reverse IDX mapping ($idx->$name).
 	private $value=NULL;  // Solution value.
+	private $solution=NULL;
 
-	private $linear=FALSE;
 	
 	function __construct($maxOrMin='min') {
 		$osil=new \SimpleXMLElement('<osil/>');
@@ -42,7 +43,7 @@ class OS {
 		return (string)$this->osrl->general->instanceName;
 	}
 	
-	function addVariable($name,$type=null){
+	function addVariable($name,$type=NULL){
 		$variables=$this->osil->instanceData->variables; // shortcut
 		$this->var[$name]=$variables->var->count(); // $name to $idx (zero based -- preinsert)
 		$var=$variables->addChild('var');
@@ -59,6 +60,10 @@ class OS {
 		}
 		return $this->value[$name];
 	}
+	
+	function getOsil(){
+		return $this->osil->asXML();
+	}
 
 	function addObjCoef($name,$value){
 		$idx=$this->var[$name]; // find $idx from variable $name
@@ -68,13 +73,13 @@ class OS {
 		$obj['numberOfObjCoef']=$obj->coef->count();
 	}
 
-	function addConstraint($ub=null,$lb=null){
+	function addConstraint($lb,$ub){
 		$constraints=$this->osil->instanceData->constraints;
 		$con=$constraints->addChild('con');
-		if(isset($lb)){
+		if(!is_null($lb)){
 			$con['lb']=$lb;
 		}
-		if(isset($ub)){
+		if(!is_null($ub)){
 			$con['ub']=$ub;
 		}
 		$constraints['numberOfConstraints']=$constraints->con->count();
@@ -100,8 +105,8 @@ class OS {
 	}
 	
 	function solve(){
-		$osilfile=tempnam(OS::$solver,'OS-');
-		$osrlfile=tempnam(OS::$solver,'OS-');
+		$osilfile=tempnam(OS::$tmp,'OS-');
+		$osrlfile=tempnam(OS::$tmp,'OS-');
 		if(self::$DEBUG){
 			$osilfile='osil.xml';
 			$osrlfile='osrl.xml';
@@ -125,13 +130,14 @@ class OS {
 			unlink($osilfile);
 			unlink($osrlfile);
 		}
-		// Fix for strict parcer used by PHP.
+		// Fix for strict parser used by PHP.
 		$xml=preg_replace('/"os.optimizationservices.org"/','"http://os.optimizationservices.org"',$xml);
 		//print_r($xml);
 		$this->osrl=new \SimpleXMLElement($xml);
 		$result=(string)$this->osrl->optimization->solution->status->attributes()->type;
 		if($result!=='optimal'){
-			return FALSE;
+			$this->solution=NULL;
+			return $result;
 		}
 
 		// save values to array
@@ -144,11 +150,12 @@ class OS {
 			if(self::$DEBUG) print (float)$var."\n";
 		}
 
-		return (double)$this->osrl->optimization->solution->objectives->values->obj;
+		$this->solution=(double)$this->osrl->optimization->solution->objectives->values->obj;
+		return TRUE;
 	}
 	
 	function getSolution(){
-		return (double)$solution->objectives->values->obj;
+		return $this->solution;
 	}
 	
 }
