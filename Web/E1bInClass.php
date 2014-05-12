@@ -169,7 +169,7 @@ foreach($supplierCap as $s ){
 	$x+=1;
 	foreach($departments as $key){
 		$currentKey="S$x-${key}";
-		print_r($os->getVariable($currentKey));
+		//print_r($os->getVariable($currentKey));
 		//print $currentKey;
 		print "\n";
 		$currentRevenue = $os->getVariable($currentKey);
@@ -178,10 +178,8 @@ foreach($supplierCap as $s ){
 	$a+=1;
 }
 
-print_r($revenue);
+//print_r($revenue);
 
-
-$profit[]=NULL;
 $x=0;
 foreach($departments as $key){
 	$a=0;
@@ -197,7 +195,11 @@ foreach($departments as $key){
 	}
 	$x+=1;
 }
-print_r($profit);
+
+
+
+//print_r($totalProfit);
+//print_r($profit);
 
 //print_r($os->value);
 
