@@ -13,8 +13,8 @@ include_once 'Work-Cell-Scheduler/WCS/os.php';
 //there are the only number that need to be set (supplier and departments)
 //set them and then run the program
 
-$numSuppliers = 20;
-$numDepartments = 14;
+$numSuppliers = 5;
+$numDepartments = 5;
 $combos = $numSuppliers * $numDepartments;
 
 

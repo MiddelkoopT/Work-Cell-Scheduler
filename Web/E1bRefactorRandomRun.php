@@ -8,4 +8,4 @@
 
 include_once 'E1bRefactorRandom.php';
 
-solveRandomProblem(10,8);
+solveRandomProblem(20,15);

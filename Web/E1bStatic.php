@@ -68,7 +68,7 @@ class Distance{
 
 	$distanceMatrix["$suppliers[0]-$departments[0]"]=new Distance(2);
 	$distanceMatrix["$suppliers[0]-$departments[1]"]=new Distance(3);
-	$distanceMatrix["$suppliers[0]-$departments[2]"]=new Distance(5);
+	$distanceMatrix["$suppliers[0]-$departments[2]"]=new Distance(3);
 	$distanceMatrix["$suppliers[1]-$departments[0]"]=new Distance(5);
 	$distanceMatrix["$suppliers[1]-$departments[1]"]=new Distance(2);
 	$distanceMatrix["$suppliers[1]-$departments[2]"]=new Distance(4);
@@ -129,6 +129,5 @@ foreach($departmentDem as $d ){
 $os->solve();
 
 print_r($os);
-
-
+?>
 
