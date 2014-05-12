@@ -36,6 +36,8 @@ MakeProfitTable($k);
 MakeCostTable($k);
 MakeProdCostTable($k);
 MakeTotalProfitTable($k);
+MakePlantCostTable($k);
+MakeStoreProfitTable($k);
 MakeOutputTable($k);
 
 ?>

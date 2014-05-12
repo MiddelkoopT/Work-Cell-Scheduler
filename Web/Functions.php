@@ -474,54 +474,86 @@ Function MakePlantCostTable ($p){
 	$supplier = $p->supplier;
 	$department = $p->department;
 	$arrayprodcost = $p->arrayprodcost;
-
+	$solutionarray = $p->solutionarray;
 	
 	$plantcost = array ();
 	foreach ( $supplier as $s ) {
 		$plantcost [$s] = 0.0;
 	}
-	foreach ( $arrayprodcost as $sd => $av ) {
-		foreach ( $plantcost as $s => $bv ) {
-			if (ContainsString ( $s, $sd ) == TRUE) {
-				$currplant = $s;
-				for($i = 1; $i <= $numprodproduced; $i ++) {
-					if (ContainsString ( "$i", $pc ) == TRUE) {
-						// echo "toot";
-						$currprodnumval = "$i";
-					}
-				}
-				if ($cellprod [$cp] === "") {
-					$cellprod [$cp] = "$currprodnumval";
-				} else {
-					$cellprod [$cp] .= " , $currprodnumval";
-				}
+	
+	/**
+	echo "\n";
+	print_r($plantcost);
+	print_r($solutionarray);
+	echo "\n";
+	*/
+	
+	foreach ($solutionarray as $sd=>$sdv){
+		foreach ($plantcost as $s=>$sv){
+			if (ContainsString($s, $sd) == TRUE){
+				$currcost=($sdv*$arrayprodcost[$sd]);
+				$plantcost[$s]=$plantcost[$s]+$currcost;
 			}
 		}
 	}
 	
-	
 	// Start HTML
 	echo "<br><br>";
 	echo "<table border='1' cellpadding='10'>";
-	// do a foreach for all the cells and workers
-	echo "<td>Production Cost</td>";
-	foreach ( $department as $d ) {
-		echo "<td>$d</td>";
-	}
-	foreach ( $supplier as $s ) {
-		echo "<tr><td>$s</td>";
-		foreach ( $department as $d ) {
-			$thiscurrkey = "{$s}_{$d}";
-			$classicpooval = $arrayprodcost [$thiscurrkey];
-			echo "<td>$classicpooval</td>";
+	echo "<td></td>";
+	echo "<td>Plant Cost</td>";
+		foreach ( $plantcost as $s => $v) {
+			echo "<tr><td>$s</td>";
+			echo "<td>$v</td>";
+			echo "</tr>";
 		}
+
+	echo "</table>";
+
+}
+
+Function MakeStoreProfitTable ($p){
+
+	$supplier = $p->supplier;
+	$department = $p->department;
+	$arrayprofit = $p->arrayprofit;
+	$solutionarray = $p->solutionarray;
+
+	$storeprofit = array ();
+	foreach ( $department as $d ) {
+		$storeprofit [$d] = 0.0;
+	}
+
+	/**
+	 echo "\n";
+	 print_r($plantcost);
+	 print_r($solutionarray);
+	 echo "\n";
+	 */
+
+	foreach ($solutionarray as $sd=>$sdv){
+		foreach ($storeprofit as $d=>$dv){
+			if (ContainsString($d, $sd) == TRUE){
+				$currprof=($sdv*$arrayprofit[$sd]);
+				$storeprofit[$d]=$storeprofit[$d]+$currprof;
+			}
+		}
+	}
+
+	// Start HTML
+	echo "<br><br>";
+	echo "<table border='1' cellpadding='10'>";
+	echo "<td></td>";
+	echo "<td>Store Profit</td>";
+	foreach ( $storeprofit as $d => $v) {
+		echo "<tr><td>$d</td>";
+		echo "<td>$v</td>";
 		echo "</tr>";
 	}
 
 	echo "</table>";
 
 }
-
 
 
 
