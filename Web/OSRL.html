@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OSRL Solution</title>
+</head>
+<body>
+	<h2>OSRL Solution</h2>
+	<h1>Sean McLerran - scmmv4</h1>
+	<table border='1'>
+		<tr>
+			<td>Objective Value</td>
+		</tr>
+		<?php 
+$objvalue=$os->solve();
+echo "<tr><td>$objvalue</td><td>"
+?>
+	</table>
+	<h2>Shipping Values</h2>
+	<table border='1'>
+		<tr>
+			<th></th>
+			<?php
+foreach($supplier as $s){
+echo "<th>$s\n";
+}
+?>
+		</tr>
+		<?php
+foreach($department as $d){
+echo "<tr><th>$d</th>";
+foreach($supplier as $s){
+echo "<td>".$os->getVariable("{$s}_{$d}")."</td>";
+echo "\n";
+}
+}
+?>
+	</table>
+	<br>
+</body>
+</html>
