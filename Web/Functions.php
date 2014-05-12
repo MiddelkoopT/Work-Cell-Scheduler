@@ -10,6 +10,8 @@ class TotalInfo{
 	public $routingmatrix;
 	public $arrayprofit;
 	public $arraycost;
+	public $arrayprodcost;
+	
 }
 
 function getMatrixValue($row, $col, $arraymatrix) {
@@ -182,7 +184,23 @@ function RandomlySolveRoutingProblem($numsupanddept) {
 		$counter=$counter+1;
 	}
 
-
+	$sumcapacity=0.0;
+	$sumdemand=0.0;
+	
+	foreach ($capacity as $s=>$v){
+		$sumcapacity=$sumcapacity+$v;
+	}
+	
+	foreach ($demand as $d=>$v){
+		$sumdemand=$sumdemand+$v;
+	}
+	
+	echo "Sum Capacity: $sumcapacity <br><br>";
+	echo "Sum Demand: $sumdemand <br><br>";
+	if ($sumdemand>$sumcapacity){
+	echo "WARNING: Demand is Greater Than Capacity<br><br>";
+	}
+	
 	// assign productivity
 	$routingmatrix=array();
 	foreach ( $supplier as $s ) {
@@ -223,7 +241,7 @@ function RandomlySolveRoutingProblem($numsupanddept) {
 
 	// add constraints to stay within capacity
 	foreach ( $capacity as $s => $v ) {
-		$os->addConstraint ( NULL, $v );
+		$os->addConstraint ( $v );
 		foreach ( $department as $d ) {
 			$thiscurrkey = "{$s}_{$d}";
 			$os->addConstraintCoef ( $thiscurrkey, 1 );
@@ -233,7 +251,7 @@ function RandomlySolveRoutingProblem($numsupanddept) {
 	// add constraint to meet demand
 
 	foreach ( $demand as $d => $v ) {
-		$os->addConstraint ( $v );
+		$os->addConstraint ( NULL, $v );
 		foreach ( $supplier as $s ) {
 			$thiscurrkey = "{$s}_{$d}";
 			$os->addConstraintCoef ( $thiscurrkey, 1 );
@@ -423,10 +441,92 @@ Function MakeTotalProfitTable ($p){
 
 }
 
+Function MakeProdCostTable ($p){
+
+	$supplier = $p->supplier;
+	$department = $p->department;
+	$arrayprodcost = $p->arrayprodcost;
+
+	// Start HTML
+	echo "<br><br>";
+	echo "<table border='1' cellpadding='10'>";
+	// do a foreach for all the cells and workers
+	echo "<td>Production Cost</td>";
+	foreach ( $department as $d ) {
+		echo "<td>$d</td>";
+	}
+	foreach ( $supplier as $s ) {
+		echo "<tr><td>$s</td>";
+		foreach ( $department as $d ) {
+			$thiscurrkey = "{$s}_{$d}";
+			$classicpooval = $arrayprodcost [$thiscurrkey];
+			echo "<td>$classicpooval</td>";
+		}
+		echo "</tr>";
+	}
+
+	echo "</table>";
+
+}
+
+Function MakePlantCostTable ($p){
+
+	$supplier = $p->supplier;
+	$department = $p->department;
+	$arrayprodcost = $p->arrayprodcost;
+
+	
+	$plantcost = array ();
+	foreach ( $supplier as $s ) {
+		$plantcost [$s] = 0.0;
+	}
+	foreach ( $arrayprodcost as $sd => $av ) {
+		foreach ( $plantcost as $s => $bv ) {
+			if (ContainsString ( $s, $sd ) == TRUE) {
+				$currplant = $s;
+				for($i = 1; $i <= $numprodproduced; $i ++) {
+					if (ContainsString ( "$i", $pc ) == TRUE) {
+						// echo "toot";
+						$currprodnumval = "$i";
+					}
+				}
+				if ($cellprod [$cp] === "") {
+					$cellprod [$cp] = "$currprodnumval";
+				} else {
+					$cellprod [$cp] .= " , $currprodnumval";
+				}
+			}
+		}
+	}
+	
+	
+	// Start HTML
+	echo "<br><br>";
+	echo "<table border='1' cellpadding='10'>";
+	// do a foreach for all the cells and workers
+	echo "<td>Production Cost</td>";
+	foreach ( $department as $d ) {
+		echo "<td>$d</td>";
+	}
+	foreach ( $supplier as $s ) {
+		echo "<tr><td>$s</td>";
+		foreach ( $department as $d ) {
+			$thiscurrkey = "{$s}_{$d}";
+			$classicpooval = $arrayprodcost [$thiscurrkey];
+			echo "<td>$classicpooval</td>";
+		}
+		echo "</tr>";
+	}
+
+	echo "</table>";
+
+}
+
+
 
 
 //BREAK--------------------------------------------------
-function SetUpRoutingProblem($numsuppliers, $numdepartments, $arraycapacity, $arraydemand, $arrayprofit, $arraycost) {
+function SetUpRoutingProblem($numsuppliers, $numdepartments, $arraycapacity, $arraydemand, $arrayprofit, $arraycost, $arrayprodcost) {
 	$supplier = array ();
 	$department = array ();
 	
@@ -458,6 +558,26 @@ function SetUpRoutingProblem($numsuppliers, $numdepartments, $arraycapacity, $ar
 		$counter=$counter + 1;
 	}
 	
+	$productionarray=array();
+	$counter=0;
+	foreach ($supplier as $s){
+		$productionarray[$s]=0.0;
+	}
+	foreach ($supplier as $s){
+		$productionarray [$s] = $arrayprodcost[$counter];
+		$counter=$counter + 1;
+	}
+	
+	$profitarray=array();
+	$counter=0;
+	foreach ($department as $d){
+		$profitarray[$d]=0.0;
+	}
+	foreach ($department as $d){
+		$profitarray [$d] = $arrayprofit[$counter];
+		$counter=$counter + 1;
+	}
+	
 	// assign productivity
 	$routingmatrix=array();
 	foreach ( $supplier as $s ) {
@@ -481,8 +601,42 @@ function SetUpRoutingProblem($numsuppliers, $numdepartments, $arraycapacity, $ar
 		$counter=$counter + 1;
 	}
 	
+	$arrayprodcostnew=array();
+	$counter=0;
 	foreach ($routingmatrix as $sd=>$v){
-		$routingmatrix [$sd] = ($arrayprofitnew[$sd]-$arraycostnew[$sd]);
+		$arrayprodcostnew[$sd]=$arrayprodcost[$counter];
+		$counter=$counter + 1;
+	}
+	
+	foreach ($routingmatrix as $sd=>$v){
+		$routingmatrix [$sd] = ($arrayprofitnew[$sd]-$arraycostnew[$sd]-$arrayprodcostnew[$sd]);
+	}
+	
+	$sumcapacity=0.0;
+	$sumdemand=0.0;
+	$sumprodcost=0.0;
+	$sumprofit=0.0;
+	
+	foreach ($capacity as $s=>$v){
+		$sumcapacity=$sumcapacity+$v;
+	}
+	
+	foreach ($demand as $d=>$v){
+		$sumdemand=$sumdemand+$v;
+	}
+	
+	foreach ($productionarray as $s=>$v){
+		$sumprodcost=$sumprodcost+$v;
+	}
+	
+	foreach ($profitarray as $d=>$v){
+		$sumprofit=$sumprofit+$v;
+	}
+	
+	echo "Sum Capacity: $sumcapacity <br><br>";
+	echo "Sum Demand: $sumdemand <br><br>";
+	if ($sumdemand>$sumcapacity){
+	echo "WARNING: Demand is Greater Than Capacity<br><br>";
 	}
 	
 	//print_r($capacity);
@@ -498,6 +652,7 @@ function SetUpRoutingProblem($numsuppliers, $numdepartments, $arraycapacity, $ar
 	$p->routingmatrix=$routingmatrix;
 	$p->arrayprofit=$arrayprofitnew;
 	$p->arraycost=$arraycostnew;
+	$p->arrayprodcost=$arrayprodcostnew;
 	return $p;
 	
 }
@@ -513,6 +668,7 @@ function SolveSetUpRoutingProblem($p) {
 	$routingmatrix = $p->routingmatrix;
 	$arrayprofit = $p->arrayprofit;
 	$arraycost = $p->arraycost;
+	$arrayprodcost = $p->arrayprodcost;
 	
 	
 	// Add variables
@@ -526,7 +682,15 @@ function SolveSetUpRoutingProblem($p) {
 	
 	// add constraints to stay within capacity
 	foreach ( $capacity as $s => $v ) {
-		$os->addConstraint ( NULL, $v );
+		$os->addConstraint ( $v );
+		foreach ( $department as $d ) {
+			$thiscurrkey = "{$s}_{$d}";
+			$os->addConstraintCoef ( $thiscurrkey, 1 );
+		}
+	}
+	
+	foreach ( $capacity as $s => $v ) {
+		$os->addConstraint ( NULL, 100 );
 		foreach ( $department as $d ) {
 			$thiscurrkey = "{$s}_{$d}";
 			$os->addConstraintCoef ( $thiscurrkey, 1 );
@@ -535,7 +699,7 @@ function SolveSetUpRoutingProblem($p) {
 	
 	// add constraint to meet demand
 	foreach ( $demand as $d => $v ) {
-		$os->addConstraint ( $v );
+		$os->addConstraint ( NULL, $v );
 		foreach ( $supplier as $s ) {
 			$thiscurrkey = "{$s}_{$d}";
 			$os->addConstraintCoef ( $thiscurrkey, 1 );
@@ -563,6 +727,7 @@ function SolveSetUpRoutingProblem($p) {
 	$p->routingmatrix=$routingmatrix;
 	$p->arrayprofit=$arrayprofit;
 	$p->arraycost=$arraycost;
+	$p->arrayprodcost=$arrayprodcost;
 	return $p;
 	
 }
@@ -577,14 +742,6 @@ class WorkerProblemSetUp {
 	public $cellprod;
 }
 
-function getWorkerProd($w, $c, $arraymatrix) {
-	$thiskey = "{$w}_{$c}";
-	if (array_key_exists ( $thiskey, $arraymatrix )) {
-		return $arraymatrix [$thiskey];
-	} else {
-		return 0;
-	}
-}
 // how to pull productivity
 // $productivity=getWorkerProd("Worker 1", "Cell 1",$trainingmatrix);
 // echo "Worker 1_Cell 1 Productivity \n";
@@ -688,8 +845,6 @@ function SetUpAssignmentProblem($numworkers, $numcells, $numproducts, $arraymatr
 	foreach ( $prodcells as $pc => $cv ) {
 		foreach ( $cellprod as $cp => $pv ) {
 			if (ContainsString ( $cp, $cv ) == TRUE) {
-				// echo "poop \n";
-				// echo "$pc \n";
 				$currprodnumval = "";
 				for($i = 1; $i <= $numprodproduced; $i ++) {
 					if (ContainsString ( "$i", $pc ) == TRUE) {
@@ -743,7 +898,7 @@ function SolveSetUpAssignmentProblem($problem) {
 		$os->addConstraint ( NULL, $v );
 		foreach ( $worker as $w ) {
 			$thiscurrkey = "{$w}_{$c}";
-			$pooval = getWorkerProd ( $w, $c, $trainingmatrix );
+			$pooval = getMatrixValue( $w, $c, $trainingmatrix );
 			$os->addConstraintCoef ( $thiscurrkey, $pooval );
 		}
 	}
@@ -779,7 +934,7 @@ function SolveSetUpAssignmentProblem($problem) {
 	foreach ( $worker as $w ) {
 		echo "<tr><td>$w</td>";
 		foreach ( $cell as $c ) {
-			$classicpooval = getWorkerProd ( $w, $c, $trainingmatrix );
+			$classicpooval = getMatrixValue ( $w, $c, $trainingmatrix );
 			echo "<td>$classicpooval</td>";
 		}
 		echo "</tr>";
