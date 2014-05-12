@@ -1,4 +1,5 @@
 <?php
+//
 require_once "Work-Cell-Scheduler/WCS/os.php";
 //
 Class Problemdata{
@@ -179,7 +180,7 @@ Class Model{
 	function displaySolution(){
 	
 		if(($this->of->getSolution()==NULL))
-			echo "this total number of demand larger than capacity total, you cannot get the solution.";
+			echo "<h4>this total number of demand larger than capacity total, you cannot get the solution.Please change other numbers<h4>";
 		else
 		{echo "The solution:\n";
 		print_r($this->of->getSolution());}
