@@ -1,7 +1,7 @@
 <?php
 // Optimization Services Copyright 2014 by Timothy Middelkoop Spring 2014 License Apache 2.0
 namespace WebIS;
-
+////
 class OS {
 	static $DEBUG=FALSE;
 	static $solver="\\WebIS\\bin\OSSolverService.exe";
@@ -15,7 +15,7 @@ class OS {
 	private $solution=NULL;
 
 	
-	function __construct($maxOrMin='min') {
+	function __construct($maxOrMin='max') {
 		$osil=new \SimpleXMLElement('<osil/>');
 		$osil->addChild('instanceHeader')->addChild('name',php_uname('n').' '.date('c'));
 		$data=$osil->addChild('instanceData');
@@ -159,5 +159,3 @@ class OS {
 	}
 	
 }
-
-?>
