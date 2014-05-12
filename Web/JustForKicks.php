@@ -20,21 +20,35 @@ function assertEquals($expected,$result) {
  $supplier = array(
  "S1" => 600,
  "S2" => 300,
- "S3" => 200
+ "S3" => 200,
+ "S4" => 500
  );
  //print_r($supplier);
-
+ 
+ //Produciton cost.  Define as $pcost
+ //key=supplier, value=production cost
+ $pcost = array(
+ "S1" => 10,
+ "S2" => 14,
+ "S3" => 40,
+ "S4" => 11
+ );
  //key=dept, value=demand
  $department = array(
  "D1" => 600,
  "D2" => 200,
- "D3" => 500
+ "D3" => 300,
+ "D4" => 100,
+ "D5" => 300
  );
  //assign profit per sale for each dept
+ //key=dept, value=profit/unit sold
  $dprofit = array(
  "D1" => 20,
  "D2" => 30,
- "D3" => 40
+ "D3" => 40,
+ "D4" => 25,
+ "D5" => 25
  );
 
  //print_r($department);
@@ -43,12 +57,23 @@ function assertEquals($expected,$result) {
  "S1_D1" => 2,
  "S1_D2" => 3,
  "S1_D3" => 3,
+ "S1_D4" => 3,
+ "S1_D5" => 3,
  "S2_D1" => 5,
  "S2_D2" => 2,
  "S2_D3" => 4,
+ "S2_D4" => 4,
+ "S2_D5" => 2,
  "S3_D1" => 3,
  "S3_D2" => 2,
- "S3_D3" => 8
+ "S3_D3" => 8,
+ "S3_D4" => 2,
+ "S3_D5" => 2,
+ "S4_D1" => 3,
+ "S4_D2" => 2,
+ "S4_D3" => 4,
+ "S4_D4" => 2,
+ "S4_D5" => 2
  );
  //print_r($distance);
  
@@ -60,12 +85,14 @@ function assertEquals($expected,$result) {
 	$totaldemand=array_sum($department);
 	//print_r($totalsupply);
 	//print_r($totaldemand);
+	//$trpofit will be an array that holds all OF COefficients
+	//$tprofit = (profit/unit sold) - (cost of production) - (cost of transportation) 
 	$tprofit=array();
 	foreach( $supplier as $key => $value){
 		foreach( $dprofit as $k => $v){
 			$newkey = "{$key}_{$k}";
 			//print_r($newkey);
-			$tprofit[$newkey] = $v - $distance[$newkey];
+			$tprofit[$newkey] = $v - $pcost[$key] - $distance[$newkey];
 		}
 	}
 	//print_r($tprofit);
@@ -93,7 +120,7 @@ function assertEquals($expected,$result) {
 
 	//constraints 
 	foreach ($supplier as $key => $value){
-		$os->addConstraint($value,NULL);
+		$os->addConstraint($value,100);
 		foreach ($department as $k=>$v){
 			$newkey="{$key}_{$k}";
 			//print_r($newkey);
@@ -101,6 +128,8 @@ function assertEquals($expected,$result) {
 		}
 	}
 	//print_r($os);
+	//The constraints below account for the situation where demand is greater than capacity.  
+	//Based on classical transportation formulation, 
 	if($totaldemand<=$totalcapacity){
 	foreach ($department as $key => $value){
 		$os->addConstraint(NULL,$value);
@@ -121,19 +150,21 @@ function assertEquals($expected,$result) {
 			}
 		}
 	}
+	
 	$os->solve();
-	print_r($os);
+	//print_r($os);
 	$solutions=$os->value;
 	$objval=(double)$os->osrl->optimization->solution->objectives->values->obj;
-	//print_r($solutions);
+	
+	print_r($solutions);
 	print_r($objval);
 	//Tables
 
 echo "<html><h2>Lance Markert, LRMR47</h2>";
 if($totaldemand>$totalcapacity){
-	echo "<h3><font color='red'>Assigned Problem is Infeasible</font></h3>";
+	echo "<h3><font color='red'>Problem and Solution Shown Below:<br>Warning: Not all demand can be satisfied</font></h3>";
 }   else
-{echo "<h3>Assigned Problem in Feasible: Problem and Solution Shown Below</h3>";
+{echo "<h3>Problem and Solution Shown Below</h3>";
 }
 	
 //Table for suppliers

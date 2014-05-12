@@ -19,7 +19,7 @@ $supplier = array(
 $department = array(
 		"D1" => 600,
 		"D2" => 200,
-		"D3" => 500
+		"D3" => 300
 );
 //assign profit per sale for each dept
 $dprofit = array(
