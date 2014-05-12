@@ -6,12 +6,14 @@ require_once 'Work-Cell-Scheduler/WCS/os.php';
 
 //------------------------------------------------------------------------------
 //Create Stores and Suppliers
-$numDepartments=3;
-$numSuppliers=3;
+$numDepartments=4;
+$numSuppliers=5;
+$plantCost=4;
 $numCostIndexes=$numDepartments*$numSuppliers;
 
 $suppliers=array();
 $departments=array();
+$plantCost=array();
 
 for($i=0;$i<($numSuppliers);$i++){
 	$suppliers[]="S-$i";
@@ -19,32 +21,36 @@ for($i=0;$i<($numSuppliers);$i++){
 for($i=0;$i<($numDepartments);$i++){
 	$departments[]="D-$i";
 }
-//print_r($departments);
-//print_r($suppliers);
+print_r($departments);
+print_r($suppliers);
 
 //Create Supply and Demand Arrays
-$capacity=array(600,300,200);
-$demand=array(600,200,300);
-$profitDisplay=array(20,30,40);
-$profit=array(20,30,40,20,30,40,20,30,40);
+$capacity=array(600,300,200,500);
+$demand=array(600,200,300,100,300);
+$profitDisplay=array(20,30,40,25);
+$profit=array(20,30,40,25,20,30,40,25,20,30,40,25);
 $cost=array(2,3,3,5,2,4,3,3,8);
+$plantCost=array(10,14,40,11);
 $aProfit=array();
 
 //Create Actual Profit Array
 foreach ($cost as $key => $value) {
-	$aProfit[$key] = $profit[$key] - $cost[$key];
+	foreach($plantCost as $key => $value)
+	$aProfit[$key] = $profit[$key] - $cost[$key] - $plantCost[$key];
 }
 echo"\n";
-//echo "ActualProfit";
-//print_r($actualProfit);
+//echo "aProfit";
+print_r($aProfit);
 
 $aProfit1=array();
 foreach($suppliers as $key=>$s){
 	foreach($departments as $key=>$d){
-		$aProfit1["{$s}_{$d}"] = $aProfit[$key];
+		foreach($plantCost as $key=>$c){
+		$aProfit1["{$s}_{$d}_{$c}"] = $aProfit[$key];
+		}
 	}
 }
-//print_r($actualProfit1);
+print_r($aProfit1);
 
 //Create Indexed Array for Supply Capacity
 $supplyVal=array();
@@ -52,7 +58,7 @@ for($i=0;$i<($numSuppliers);$i++){
 	$supplyVal["S-$i"]=$capacity[$i];
 }
 //echo "SupplyVal";
-//print_r($supplyVal);
+print_r($supplyVal);
 
 //Created Indexed Array for Store Demand
 $demandVal=array();
@@ -60,7 +66,7 @@ for($i=0;$i<($numDepartments);$i++){
 	$demandVal["D-$i"]=$demand[$i];
 }
 //echo "demandVal";
-//print_r($demandVal);
+print_r($demandVal);
 
 //Create Decision Variable
 $dvariable=array();
@@ -69,7 +75,7 @@ foreach($suppliers as $s){
 		$dvariable[]="{$s}_{$d}";
 	}
 }
-//print_r($dvariable);
+print_r($dvariable);
 
 //--------------------------------------------------------------------------
 //Create OSIL file
@@ -97,7 +103,10 @@ foreach($suppliers as $s){
 		$os->addConstraintCoef("{$s}_{$d}",1);
 	}
 }
+
+//Create Plant
 //print_r($os);
+
 
 ?>
 
@@ -105,7 +114,6 @@ foreach($suppliers as $s){
 //Create the HTML File
 //---------------------------------------------------------------
 ?>
-
 <html>
 <meta charset="UTF-8">
 <title>Decision Support Systems IMSE 4420 Final</title>
