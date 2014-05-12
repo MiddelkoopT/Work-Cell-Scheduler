@@ -21,8 +21,8 @@ for($i=0;$i<($numSuppliers);$i++){
 for($i=0;$i<($numDepartments);$i++){
 	$departments[]="D-$i";
 }
-print_r($departments);
-print_r($suppliers);
+//print_r($departments);
+//print_r($suppliers);
 
 //Create Supply and Demand Arrays
 $capacity=array(600,300,200,500);
@@ -40,7 +40,7 @@ foreach ($cost as $key => $value) {
 }
 echo"\n";
 //echo "aProfit";
-print_r($aProfit);
+//print_r($aProfit);
 
 $aProfit1=array();
 foreach($suppliers as $key=>$s){
@@ -50,7 +50,7 @@ foreach($suppliers as $key=>$s){
 		}
 	}
 }
-print_r($aProfit1);
+//print_r($aProfit1);
 
 //Create Indexed Array for Supply Capacity
 $supplyVal=array();
@@ -58,7 +58,7 @@ for($i=0;$i<($numSuppliers);$i++){
 	$supplyVal["S-$i"]=$capacity[$i];
 }
 //echo "SupplyVal";
-print_r($supplyVal);
+//print_r($supplyVal);
 
 //Created Indexed Array for Store Demand
 $demandVal=array();
@@ -66,16 +66,16 @@ for($i=0;$i<($numDepartments);$i++){
 	$demandVal["D-$i"]=$demand[$i];
 }
 //echo "demandVal";
-print_r($demandVal);
+//print_r($demandVal);
 
 //Create Decision Variable
 $dvariable=array();
 foreach($suppliers as $s){
 	foreach($departments as $d){
-		$dvariable[]="{$s}_{$d}";
+		$dvariable[]="{$s}_{$d}_{$c}";
 	}
 }
-print_r($dvariable);
+//print_r($dvariable);
 
 //--------------------------------------------------------------------------
 //Create OSIL file
@@ -91,7 +91,7 @@ foreach($dvariable as $dv){
 foreach($departments as $d){
 	$os->addConstraint(NULL,$demandVal[$d]);
 	foreach($suppliers as $s){
-		$os->addConstraintCoef("{$s}_{$d}",1);
+		$os->addConstraintCoef("{$s}_{$d}_{$c}",1);
 	}
 }
 
@@ -100,7 +100,7 @@ foreach($departments as $d){
 foreach($suppliers as $s){
 	$os->addConstraint($supplyVal[$s],NULL);
 	foreach($departments as $d){
-		$os->addConstraintCoef("{$s}_{$d}",1);
+		$os->addConstraintCoef("{$s}_{$d}_{$c}",1);
 	}
 }
 
