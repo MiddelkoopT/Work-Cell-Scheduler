@@ -111,18 +111,32 @@ $shipping->set('supply-3','department-4',2);
 //print_r($shipping);
 //print_r($shipping->get($supply[0],$department[0]));
 
+
+//Profit for each department respectively
 $d0=array(20,30,40,25,25);
 //print_r($d0[1]);
 
+//Production costs for each plant respectively
+$p0=array(10,14,40,11);
+
+
+//revenue array = (profit for each department) - (shipping cost) - (production cost)
 $revenue=array();
 foreach($supply as $s){
 	foreach(array_combine($department,$d0) as $d => $d1){
 		$var="${s}_${d}";
-		$revenue[$var]=$d1-$shipping->get($s,$d,NULL);
-		//print_r($revenue[$var]."\n");
+		$revenue[$var]=$d1-$shipping->get($s,$d);
+		
 	}
 }
 
+foreach($department as $d){
+	foreach(array_combine($supply,$p0) as $s => $p1){
+		$var="${s}_${d}";
+		$revenue[$var]-=$p1;
+	}
+}
+//print_r($revenue);
 
 //Start Optimization
 
@@ -172,7 +186,7 @@ assertTrue($os->solve());
 
 $os->solve();
 $maxprofit=$os->getsolution();
-print_r($maxprofit."\n");
+print_r("max profit: ".$maxprofit."\n");
 
 
 

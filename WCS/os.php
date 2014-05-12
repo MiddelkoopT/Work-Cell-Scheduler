@@ -15,7 +15,7 @@ class OS {
 	private $solution=NULL;
 
 	
-	function __construct($maxOrMin='min') {
+	function __construct($maxOrMin='max') {
 		$osil=new \SimpleXMLElement('<osil/>');
 		$osil->addChild('instanceHeader')->addChild('name',php_uname('n').' '.date('c'));
 		$data=$osil->addChild('instanceData');
