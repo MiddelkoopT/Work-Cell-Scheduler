@@ -1,5 +1,28 @@
 --  Database Copyright 2014 by WebIS Spring 2014 License Apache 2.0
 
+-- Worker2 table
+DROP TABLE IF EXISTS Workers2;
+CREATE TABLE Workers2 (
+  workerID integer,
+  name VARCHAR(128),
+  rateSub1 double,
+  rateSub2 double,
+  PRIMARY KEY (workerID)
+);
+
+INSERT INTO Workers2 (workerID, name, rateSub1, rateSub2) VALUES
+	(102,'Mark Dintelman',0.9,0.8);
+
+-- Worker
+DROP TABLE IF EXISTS Workers;
+CREATE TABLE Workers (
+  workerID integer,
+  name VARCHAR(128),
+  subcell integer,
+  rate double,
+  PRIMARY KEY (workerID)
+);
+  
 -- Person
 DROP TABLE IF EXISTS Person;
 CREATE TABLE Person (
