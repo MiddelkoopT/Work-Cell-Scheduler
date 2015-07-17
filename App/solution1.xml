@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="http://www.coin-or.org/OS/stylesheets/OSrL.xslt"?>
+<osrl xmlns="os.optimizationservices.org"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="os.optimizationservices.org http://www.optimizationservices.org/schemas/2.0/OSrL.xsd" >
+<general>
+<generalStatus type="normal">
+</generalStatus>
+<serviceName>
+
+Optimization Services Solver
+Main Authors: Horand Gassmann, Jun Ma, and Kipp Martin
+Distributed under the Eclipse Public License
+OS Version: 2.4.1
+Build Date: Nov 16 2011
+SVN Version: 4392
+
+</serviceName>
+<solverInvoked>COIN-OR clp</solverInvoked>
+</general>
+<job>
+<timingInformation numberOfTimes="1">
+<time type="elapsedTime" unit="second" category="total">
+0</time>
+</timingInformation>
+</job>
+<optimization numberOfSolutions="1" numberOfVariables="0" numberOfConstraints="0" numberOfObjectives="1">
+<solution targetObjectiveIdx="-1">
+<status type="optimal">
+</status>
+<variables numberOfOtherVariableResults="1">
+<values numberOfVar="0">
+</values>
+<other name="reduced costs" description="the variable reduced costs">
+</other>
+</variables>
+<objectives >
+<values numberOfObj="1">
+<obj idx="-1">0</obj>
+</values>
+</objectives>
+</solution>
+</optimization>
+</osrl>
