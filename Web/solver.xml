@@ -1,0 +1,52 @@
+<osil>
+	<instanceHeader>
+		<name>OSiL Example</name>
+		<source>Mark Dintelman</source>
+		<description>
+			max 6w + 3x + y + 7z
+			s.t.:
+     			w  + 2y + 5z &lt;= 10
+    			y + 4z &lt;= 20
+    			w &gt;=0, x &gt;= 0, y &gt;= 0, z &gt;= 0
+    			
+    		Solution 60 @(w=10,x=0,y=0,z=0)
+    						
+			OSSolverService -osil solver.osil -osrl first.osrl
+		</description>
+	</instanceHeader>
+	<instanceData>
+		<variables numberOfVariables="4">
+			<var name="w" />
+			<var name="x" />
+			<var name="y" />
+			<var name="z" />
+		</variables>
+		<objectives>
+			<obj maxOrMin="max" numberOfObjCoef="4">
+				<coef idx="0">6</coef>
+				<coef idx="1">3</coef>
+				<coef idx="2">1</coef>
+				<coef idx="3">7</coef>
+			</obj>
+		</objectives>
+		<constraints numberOfConstraints="2">
+			<con ub="10"/>
+			<con ub="20"/>
+		</constraints>
+		<linearConstraintCoefficients numberOfValues="8">
+			<start>
+				<el>0</el>
+				<el>4</el>
+				<el>8</el>
+			</start>
+			<colIdx>
+				<el>0</el><el>1</el><el>2</el><el>3</el>
+				<el>0</el><el>1</el><el>2</el><el>3</el>
+			</colIdx>
+			<value>
+				<el>1</el><el>1</el><el>2</el><el>5</el>
+				<el>1</el><el>1</el><el>1</el><el>4</el>			
+			</value>
+		</linearConstraintCoefficients>
+	</instanceData>
+</osil>
