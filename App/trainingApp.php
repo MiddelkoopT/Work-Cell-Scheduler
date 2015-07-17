@@ -20,8 +20,8 @@ class TrainingMatrix{
 	 * @var unknown
 	 */
 	private $training_person;
-	private $training_workstation;
-	private $training_wsp;
+	private $training_cell;
+	private $training_ergo;
 
 	function __construct(){
 		$this->db = @new \mysqli(\WCS\Config::$dbhost,\WCS\Config::$dbuser,\WCS\Config::$dbpassword,\WCS\Config::$dbdatabase);
@@ -76,7 +76,7 @@ class TrainingMatrix{
 		if($this->training_stmt!=NULL){
 			return $this->training_stmt;
 		}
-		$stmt=$this->db->prepare("SELECT wsp FROM TrainingMatrix WHERE person=? AND workstation=?");
+		$stmt=$this->db->prepare("SELECT ergo FROM TrainingMatrix WHERE person=? AND workstation=?");
 		if($stmt===FALSE){
 			die("WCS/TrainingMatrix.training> prepare:".$this->db->error);
 			return FALSE;
@@ -85,7 +85,7 @@ class TrainingMatrix{
 			die("WCS/TrainingMatrix.training> bind_param:".$this->db->error);
 			return FALSE;
 		}
-		if($stmt->bind_result($this->training_wsp)===FALSE){
+		if($stmt->bind_result($this->training_ergo)===FALSE){
 			die("WCS/TrainingMatrix.training> bind_result:".$this->db->error);
 			return FALSE;
 		}
@@ -102,7 +102,7 @@ class TrainingMatrix{
 			return FALSE;
 		}
 		if($stmt->fetch()){
-			return $this->training_wsp;
+			return $this->training_ergo;
 		}
 		return 0;
 	}
